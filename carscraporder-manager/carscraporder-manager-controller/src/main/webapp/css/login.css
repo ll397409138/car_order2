@@ -1,0 +1,135 @@
+@charset "utf-8";
+/* CSS Document */
+*{font-family:"微软雅黑";font-size:14px;}
+ul,li{ list-style:none;margin:0;padding:0;}
+body.bg{height:100%;background:#FFF url(../img/bg2.png) center bottom fixed no-repeat; background-size:100% 22%;}
+.m-t-10{margin-top:10px;}
+.m-r-10{margin-right:10px;}
+.m-r-20{margin-right:20px;}
+.m-b-20{margin-bottom:20px;}
+.m-l-15{margin-left:15px;}
+.p20{padding:20px;}
+.redcolor{color:#F00;font-size:0.9em;}
+/*顶部导航*/
+.topbar{width:90%;height:100px;margin:40px auto 0;position:relative;}
+.logo{width:145px;height:75px;position:absolute;top:-6px;left:0;}
+.topcity{margin:10px 0 0 180px;}
+@media screen and (max-width: 1020px){}
+/*-----------------登录------------------*/
+.loginbox{width:500px;padding:20px 40px 40px; background:rgba(255,255,255,0.8);position:absolute;top:25%;left:50%;margin-left:-250px;border-radius:10px;z-index:1000; box-shadow:2px 2px 10px #356cbe;}
+.loginbox input{margin-bottom:15px;padding:20px 5px;}
+.loginbox h2{margin:4% 0 10%;}
+/*------------------------------------------------------------------index-----------------------------------------------------------------*/
+.indextitle{font-size:3em; font-family:"黑体";}
+@media screen and (min-width: 1020px) and (max-width: 1600px){.indextitle{font-size:2.4em;}}
+
+
+/*首页背景*/
+.indexbg{position:fixed;width:100%;height:60%;bottom:0; background:url(../img/bg.jpg) center top no-repeat;z-index:1;}
+@media screen and (min-width: 1020px) and (max-width: 1600px) and (max-height:769){.indexbg{height:50%;}}
+
+/*首页按钮*/
+.indexbtn{width:900px;margin:2% auto 1%;overflow:hidden;}
+.indexbtn li{width:240px;height:83px;margin:0 30px; background:url(../img/indexbtn.png) 0 14px no-repeat;float:left;}
+.indexbtn li a{display:block;width:240px;height:56px; line-height:56px;border-radius:100px;background:#3a83e6; text-align:center;color:#FFF; text-align:center;color:#FFF;font-size:1.2em;font-family:"黑体";}
+.indexbtn li:hover a{ background-color:#3365cd;transition: all .5s;text-decoration:none;}
+
+.pic-broadcast{width:480px;height:280px;padding:10px;margin:0 auto;background-color:#3a83e6;border-radius:10px; box-shadow:5px 20px 50px #356cbe;}/*轮播*/
+@media screen and (min-width: 1600px){.pic-broadcast{width:600px;height:348px;}}
+.con-box{z-index:1000;position:relative;}
+
+/*code*/
+.codebox{width:900px;margin:30px auto 0;}
+.codebox .text{color:#FFF;margin:0 10px;}
+.code-right-mar{margin-right:30px;}
+@media screen and (min-width: 1024px) and (max-width: 1600px){.codebox img{width:100px;}}
+
+.footer{height:42px; line-height:42px;width:100%;position:fixed; bottom:0;background-color:#114a94;z-index:1001;}
+.footer .text{color:#FFF;margin:0 1%;font-size:0.9em;}
+/*------------------------------------------------------------------end index-----------------------------------------------------------------*/
+/*--------------------------------------左右结构页面---------------------------------------------*/
+@media screen and (min-width: 1020px) and (max-width: 1350px){}
+.car-process{width:20%;height:90%;position:fixed;right:0;top:150px;padding:0 0 10px;border-left:1px solid #CCC;text-align:center;}/*报废流程图*/
+.car-process img{width:300px;}
+.leftbox{width:80%;}
+.leftbox h1{padding:8% 0 20px;}
+@media screen and (min-width: 1020px) and (max-width: 1400px){.car-process img{width:200px;}.leftbox h1{padding-top:18%;}}
+/*表格*/
+.tablebox {padding:10px 2% 0;}
+@media screen and (min-width: 1020px) and (max-width: 1400px){.tablebox table td,.tablebox table th,.tablebox table td span{font-size:0.9em;}}
+table.tablelist{min-width:500px;}
+table.tablelist tr td{padding:5px;}
+@media screen and (max-width: 1024px){table.tablelist{min-width:400px;}}
+/*进程*/
+.process{position:relative;height:100px;}
+.processbox,.processbox2{width:100%;position:absolute;}
+.processbox li,.processbox2 li{width:20%;float:left; text-align:center;}
+.processbox li .circular,.processbox2 li .circular{display:inline-block;width:80px;height:80px; line-height:80px;border-radius:500px; background-color:#CCC;color:#FFF; text-decoration:none;margin-bottom:10px;font-size:1.2em;font-weight:bold;}
+.processbox li p,.processbox2 li p{color:#AAA;}
+.processbox li.finish .circular,.processbox2 li.finish .circular{ background-color:#f2b968;}
+.processbox li.finish p,.processbox2 li.finish p{color:#d7912e;}
+.processbox2 li{width:33.3%;}
+/*-------表单---------*/
+.formbox{margin:0 auto;}
+.formbox-right{width:88%;margin-left:12%;}
+.searchbox{padding-bottom:30px;}
+.form-nav-left{width:10%;height:65%;border-radius:4px; background-color:#F5F5F5;border:1px solid #CCC;position:fixed;z-index:2000; opacity:0.9;}
+/*删除图片*/
+.del-btn,.nomber{width:30px;height:30px; line-height:28px; display:inline-block;font-size:0.5em;padding:0;border:0; text-align:center;border-radius:50px;position:absolute;top:-10px;right:10px; background-color:#F00;color:#FFF; opacity:0.7;}
+.nomber{ opacity:1;font-size:1em;}
+
+
+/*------------------------------------------------------------------back-stage index-----------------------------------------------------------------*/
+.back-stage-top{height:100px;  background:#3a83e6 url(../img/logo.png) 18px 20px no-repeat; padding-left:200px;}
+.back-stage-top h1{color:#FFF;padding:0;margin:0; line-height:100px;}
+.backnav{margin:0 auto;padding:20px; background-color:#f5f5f5;border-bottom:1px solid #DDD;overflow:hidden;}
+.backnav ul{padding:0;margin:0;border:0;}
+.backnav ul li{float:left;margin:0 10px;padding:0;}
+.backnav ul li a{display:block;border-radius:4px;height:40px; line-height:40px;padding:0 16px;color:#3a83e6;}
+.backnav ul li.cur a,.backnav ul li.cur a:hover{ background-color:#3a83e6;font-weight:bold;color:#FFF;}
+.backnav ul li:hover a{background-color:#DDD; text-decoration:none;}
+
+.back-index{width:80%;margin:10% auto 0;}
+.back-index a.thumbnail .back-indexblock{width:100%;height:100px;border-radius:4px; background-color:#3a83e6;color:#FFF; text-align:center; line-height:100px;
+
+background:-webkit-linear-gradient(#3a83e6,#0f54b3);
+            background:-o-linear-gradient(#3a83e6,#0f54b3);
+            background:-moz-linear-gradient(#3a83e6,#0f54b3);
+            background:linear-gradient(#3a83e6,#0f54b3);}
+.back-index a.thumbnail:hover .back-indexblock{transition: all .6s;
+background:-webkit-linear-gradient(#3a83e6,#0f3b77);
+            background:-o-linear-gradient(#3a83e6,#0f3b77);
+            background:-moz-linear-gradient(#3a83e6,#0f3b77);
+            background:linear-gradient(#3a83e6,#0f3b77);
+}
+.back-index a.thumbnail:hover{text-decoration:none;}
+
+.leftbar{position:fixed;width:170px;height:60%;border-radius:4px; background:linear-gradient(#EEE,#F5F5F5)}
+.leftbar-nav{padding:20px 0;}
+.leftbar-nav li{border-bottom:1px solid #FFF;}
+.leftbar-nav li a{display:block;padding:10px 10px 10px 20px;}
+.leftbar-nav li a:hover{ background-color:#BBB;color:#FFF; text-decoration:none}
+.rightbar{padding:10px 0 0 190px;}
+
+.img-input-box{border:1px dashed #CCC;}
+.img-input{position:absolute;display:none;top:0;left:center; opacity:0;width:100%;height:95%;}/*添加图片按钮*/
+.img-input:hover{cursor:pointer;}
+
+
+#add{z-index:3000;}
+.logo img{
+	display: block;
+	width:145px;
+	height: 67px;
+	margin-top: -10px;
+}
+ .form-nav-left{
+   	position: absolute!important;
+   }
+.img-input-box{
+	cursor: pointer;
+}
+.img-rounded{
+	width:120px!important;
+	height: 90px!important;
+}

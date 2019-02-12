@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.car.app.carscraporder.mapper.CarScrapOrderSettlementMapper" >
+  <resultMap id="BaseResultMap" type="com.car.app.carscraporder.pojo.CarScrapOrderSettlement" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="settlement_type" property="settlementType" jdbcType="CHAR" />
+    <result column="settlement_object_id" property="settlementObjectId" jdbcType="VARCHAR" />
+    <result column="settlement_amount" property="settlementAmount" jdbcType="DECIMAL" />
+    <result column="settlement_remarks" property="settlementRemarks" jdbcType="VARCHAR" />
+    <result column="settlementer" property="settlementer" jdbcType="INTEGER" />
+    <result column="settlement_time" property="settlementTime" jdbcType="TIMESTAMP" />
+    <result column="creater" property="creater" jdbcType="VARCHAR" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="operatortime" property="operatortime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, settlement_type, settlement_object_id, settlement_amount, settlement_remarks, 
+    settlementer, settlement_time, creater, operator, createtime, operatortime
+  </sql>
+  
+  <select id="getCarScrapOrderSettlementByOrderId" resultType="com.car.app.carscraporder.bo.CarScrapOrderSettlementBO"  >
+		select s.*, u.real_name as settlementerName from car_scrap_order_settlement s left join sys_user u on s.settlementer =u.id where
+         s.settlement_object_id=#{orderid}
+      
+
+	</select>
+	
+	<select id="getCarScrapOrderOfOldSettlementByOrderId" resultType="com.car.app.carscraporder.bo.CarScrapOrderSettlementBO"  >
+		select s.*, u.real_name as settlementerName from car_scrap_order_settlement s left join sys_user u on s.settlementer =u.id where
+           s.settlement_object_id in (select t.id from car_scrap_order_autoparts t where t.order_id=#{orderid})
+
+
+	</select>
+  
+</mapper>

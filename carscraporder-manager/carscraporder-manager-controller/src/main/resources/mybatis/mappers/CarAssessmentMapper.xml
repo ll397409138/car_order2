@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.car.app.carscraporder.mapper.CarAssessmentMapper" >
+  <resultMap id="BaseResultMap" type="com.car.app.carscraporder.pojo.CarAssessment" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="keyword1" property="keyword1" jdbcType="VARCHAR" />
+    <result column="keyword2" property="keyword2" jdbcType="VARCHAR" />
+    <result column="keyword3" property="keyword3" jdbcType="VARCHAR" />
+    <result column="datesOfProduction" property="datesofproduction" jdbcType="VARCHAR" />
+    <result column="displacement" property="displacement" jdbcType="VARCHAR" />
+    <result column="gearBox" property="gearbox" jdbcType="VARCHAR" />
+    <result column="fuelType" property="fueltype" jdbcType="VARCHAR" />
+    <result column="region" property="region" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="VARCHAR" />
+    <result column="creater" property="creater" jdbcType="VARCHAR" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="operatortime" property="operatortime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, keyword1, keyword2, keyword3, datesOfProduction, displacement, gearBox, fuelType, 
+    region, price, creater, operator, createtime, operatortime
+  </sql>
+ 
+ 
+ <select id="getCarAssessmentsByParam" resultMap="BaseResultMap" parameterType="com.car.app.carscraporder.vo.CarAssessmentVO"> 
+ select * from car_assessment  t where 1=1
+ 
+ 
+      <if test="vo.keyword != null and vo.keyword != ''" >
+              and (LOCATE(t.keyword1,#{vo.keyword})>0 or 
+                   LOCATE(t.keyword2,#{vo.keyword})>0 or
+                   LOCATE(t.keyword3,#{vo.keyword})>0) 
+       </if>
+      <choose>
+		   <when test="vo.datesofproduction != null and vo.datesofproduction != ''">
+		         and  (LOCATE(#{vo.datesofproduction},t.datesOfProduction)>0 or LOCATE('不限',t.datesOfProduction)>0) 
+		   </when>
+           <otherwise>
+                   and(LOCATE('不限',t.datesOfProduction)>0)
+           </otherwise>
+       </choose>
+       
+         <choose>
+		   <when test="vo.gearbox != null and vo.gearbox != ''">
+		         and  (LOCATE(#{vo.gearbox},t.gearBox)>0 or LOCATE('不限',t.gearBox)>0) 
+		   </when>
+           <otherwise>
+                   and(LOCATE('不限',t.gearBox)>0)
+           </otherwise>
+        </choose>
+       
+       
+       
+         <choose>
+		   <when test="vo.displacement != null and vo.displacement != ''">
+		         and  (LOCATE(#{vo.displacement},t.displacement)>0 or LOCATE('不限',t.displacement)>0) 
+		   </when>
+           <otherwise>
+                   and(LOCATE('不限',t.displacement)>0)
+           </otherwise>
+        </choose>
+    
+       
+       
+       
+        
+         <choose>
+		   <when test="vo.fueltype != null and vo.fueltype != ''">
+		         and  (LOCATE(#{vo.fueltype},t.fuelType)>0 or LOCATE('不限',t.fuelType)>0) 
+		   </when>
+           <otherwise>
+                   and(LOCATE('不限',t.fuelType)>0)
+           </otherwise>
+        </choose>
+        
+        <choose>
+		   <when test="vo.region != null and vo.region != ''">
+		         and  (LOCATE(#{vo.region},t.region)>0 or LOCATE('不限',t.region)>0) 
+		   </when>
+           <otherwise>
+                   and(LOCATE('不限',t.region)>0)
+           </otherwise>
+        </choose>
+    
+       
+ 
+ </select>
+ 
+ 
+ <select id="queryPageListByWhere" resultMap="BaseResultMap" parameterType="com.car.app.carscraporder.vo.CarAssessmentVO"> 
+ 
+      select * from car_assessment  t where 1=1
+      
+       <if test="vo.keyword != null and vo.keyword != ''" >
+              
+               and (t.keyword1   like CONCAT('%',#{vo.keyword},'%') or
+                    t.keyword2   like CONCAT('%',#{vo.keyword},'%') or
+                    t.keyword3   like CONCAT('%',#{vo.keyword},'%') 
+                )
+       </if>
+      
+      
+ 
+ 
+ </select>
+</mapper>

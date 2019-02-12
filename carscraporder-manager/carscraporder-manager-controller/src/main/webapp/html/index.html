@@ -1,0 +1,138 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <script src="../js/jquery-3.1.1.min.js" type="text/javascript"></script>
+    <script src="../js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../js/dropdown.js" type="text/javascript"></script>
+    <script src="../js/modal.js" type="text/javascript"></script>
+    <title>车报废管理后台</title>
+    <script type="text/javascript">
+        $('.dropdown-toggle').dropdown()
+    </script>
+    <style>
+        .displaynone {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="back-stage-top">
+        <h1 class="pull-left">车报废管理后台</h1>
+        <h1 class="pull-right text-primary" id="loginout" style="margin-left:20px;cursor:pointer;font-size:18px;margin-right:50px;" onclick="loginout()">退出</h1>
+        <h1 class="pull-right text-primary" id="loginusername" style="margin-left:20px;font-size:18px;">用户名：张三</h1>
+    </div>
+    <div class="backnav">
+        <ul class="backnav">
+            <li class="cur"><a href="index.html">首页</a></li>
+            <li><a href="orderlist.html">订单管理</a></li>
+            <li><a href="scraplist.html">报废汽车</a></li>
+            <li><a href="jiulist.html">旧件回收</a></li>
+            <li><a href="moneymanage.html">财务管理</a></li>
+            <li><a href="system.html">系统设置</a></li>
+        </ul>
+    </div>
+    <div class="back-index">
+        <div class="row">
+            <div class="col-md-4">
+                <a href="" class="thumbnail"><div class="back-indexblock">未处理订单</div></a>
+                <span class="nomber displaynone" id="weichuli"></span>
+            </div>
+            <div class="col-md-4">
+                <a href="" class="thumbnail"><div class="back-indexblock">未接收报废车辆</div></a>
+                <span class="nomber displaynone" id="wjsbaofei"></span>
+            </div>
+            <div class="col-md-4">
+                <a href="" class="thumbnail"><div class="back-indexblock">未接收旧件</div></a>
+                <span class="nomber displaynone" id="wjsjiujian"></span>
+            </div>
+            <div class="col-md-4">
+                <a href="" class="thumbnail"><div class="back-indexblock">超时未处理订单</div></a>
+                <span class="nomber displaynone" id="csweichuli"></span>
+            </div>
+            <div class="col-md-4">
+                <a href="" class="thumbnail"><div class="back-indexblock">超时未接收报废车辆</div></a>
+                <span class="nomber displaynone" id="cswjsbaofei"></span>
+            </div>
+            <div class="col-md-4">
+                <a href="" class="thumbnail"><div class="back-indexblock">超时未接收旧件</div></a>
+                <span class="nomber displaynone" id="cswjsjiujian"></span>
+            </div>
+        </div>
+    </div>
+    <script src="../js/comm.js"></script>
+    <script>
+        clearnull();
+        $.ajax({
+            url: "http://60.205.223.142/carscraporder-manager/index",
+            type: "GET",
+            dataType: "json",
+            success: function (obj) {
+                if (obj.msg == "success") {
+                    //obj.data = [{ "code": 1, "remindNum": 1 }, { "code": 2, "remindNum": 2 }, { "code": 3, "remindNum": 3 }, { "code": 4, "remindNum": 4 }, { "code": 5, "remindNum": 5 }, { "code": 6, "remindNum": 6 }];
+                    if (obj.data.length > 0) {
+                        for (var i = 0, j = obj.data.length; i < j; i++) {
+                            if (obj.data[i].code == 1) {
+                                if (obj.data[i].remindNum != 0) {
+                                    $("#weichuli").text(obj.data[i].remindNum);
+                                    $("#weichuli").removeClass("displaynone");
+                                }
+                                else {
+                                    $("#weichuli").addClass("displaynone");
+                                }
+                            }
+                            if (obj.data[i].code == 2) {
+                                if (obj.data[i].remindNum != 0) {
+                                    $("#wjsbaofei").text(obj.data[i].remindNum);
+                                    $("#wjsbaofei").removeClass("displaynone");
+                                }
+                                else {
+                                    $("#wjsbaofei").addClass("displaynone");
+                                }
+                            }
+                            if (obj.data[i].code == 3) {
+                                if (obj.data[i].remindNum != 0) {
+                                    $("#wjsjiujian").text(obj.data[i].remindNum);
+                                    $("#wjsjiujian").removeClass("displaynone");
+                                }
+                                else {
+                                    $("#wjsjiujian").addClass("displaynone");
+                                }
+                            }
+                            if (obj.data[i].code == 4) {
+                                if (obj.data[i].remindNum != 0) {
+                                    $("#csweichuli").text(obj.data[i].remindNum);
+                                    $("#csweichuli").removeClass("displaynone");
+                                }
+                                else {
+                                    $("#csweichuli").addClass("displaynone");
+                                }
+                            }
+                            if (obj.data[i].code == 5) {
+                                if (obj.data[i].remindNum != 0) {
+                                    $("#cswjsbaofei").text(obj.data[i].remindNum);
+                                    $("#cswjsbaofei").removeClass("displaynone");
+                                }
+                                else {
+                                    $("#cswjsbaofei").addClass("displaynone");
+                                }
+                            }
+                            if (obj.data[i].code == 6) {
+                                if (obj.data[i].remindNum != 0) {
+                                    $("#cswjsjiujian").text(obj.data[i].remindNum);
+                                    $("#cswjsjiujian").removeClass("displaynone");
+                                }
+                                else {
+                                    $("#cswjsjiujian").addClass("displaynone");
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

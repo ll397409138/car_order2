@@ -1,0 +1,145 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.car.app</groupId>
+    <artifactId>carscraporder-manager</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>carscraporder-manager-controller</artifactId>
+  <packaging>war</packaging>
+  
+  <dependencies>
+     <dependency> 
+	      <groupId>com.car.app</groupId> 
+	      <artifactId>carscraporder-manager-service</artifactId>
+	      <version>0.0.1-SNAPSHOT</version>
+       </dependency>
+        
+       <dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+		</dependency>
+		<!-- MySql -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+		<!-- 连接池 -->
+		<dependency>
+			<groupId>com.jolbox</groupId>
+			<artifactId>bonecp-spring</artifactId>
+		</dependency>
+		
+		
+		<dependency>
+				<groupId>jstl</groupId>
+				<artifactId>jstl</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>servlet-api</artifactId>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>jsp-api</artifactId>
+				<scope>provided</scope>
+			</dependency>
+			
+		
+        
+        <dependency>
+         <groupId>com.itextpdf</groupId>
+         <artifactId>itextpdf</artifactId> 
+         <version>5.5.10</version>  
+       </dependency>   
+       
+     
+       
+       
+      
+  </dependencies>
+   <profiles>
+        <profile>
+            <id>local</id>
+            <properties>
+                <profiles.active>local</profiles.active>
+            </properties>
+           
+            
+        </profile>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <profiles.active>dev</profiles.active>
+            </properties>
+             <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <profiles.active>prod</profiles.active>
+            </properties>
+        </profile>
+    </profiles>
+
+	<build>
+	
+	   <resources>
+	       <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <!--默认打包排除env文件夹-->
+                <excludes>
+                    <exclude>env/**/*</exclude>
+                </excludes>
+            </resource>
+            <!--根据参数打包配置文件-->
+            <resource>
+                <directory>src/main/resources/env/${profiles.active}</directory>
+                <filtering>true</filtering>
+            </resource>
+	   
+	   </resources>
+	   
+	   
+	    
+	
+		<plugins>
+			<!-- 配置Tomcat插件 -->
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<configuration>
+					<port>8081</port>
+					<path>/carscraporder-manager</path>
+					<uriEncoding>UTF-8</uriEncoding>  
+				</configuration>
+			</plugin>
+			
+			 <plugin>  
+                <groupId>org.apache.maven.plugins</groupId>  
+                <artifactId>maven-eclipse-plugin</artifactId>  
+                <version>2.9</version>  
+                <configuration>  
+                    <additionalProjectnatures>  
+                        <projectnature>org.eclipse.jdt.core.javanature</projectnature>  
+                        <projectnature>org.eclipse.m2e.core.maven2Nature</projectnature>  
+                        <projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>  
+                    </additionalProjectnatures>  
+                    <additionalBuildcommands>  
+                        <buildcommand>org.eclipse.jdt.core.javabuilder</buildcommand>  
+                        <buildcommand>org.eclipse.m2e.core.maven2Builder</buildcommand>  
+                        <buildcommand>org.springframework.ide.eclipse.core.springbuilder</buildcommand>  
+                    </additionalBuildcommands>  
+                </configuration>  
+            </plugin>  
+			
+			
+		</plugins>
+	</build>
+  
+</project>

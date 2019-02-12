@@ -1,0 +1,923 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css" />
+    <link rel="stylesheet" href="../layui/css/layui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" href="../lookpic/dist/zoomify.min.css" />
+    <script src="../js/jquery-3.1.1.min.js" type="text/javascript"></script>
+    <script src="../js/bootstrap.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../js/jquery.bootstrap.min.js"></script>
+    <script src="../js/dropdown.js" type="text/javascript"></script>
+    <script src="../js/modal.js" type="text/javascript"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=3LSsiAvyTOStAaAc4Nwb2EDyZcUc9lx8"></script>
+    <script type="text/javascript" src="../layui/layui.js"></script>
+    <script src="../lookpic/dist/zoomify.min.js"></script>
+    <style>
+        .datetimepicker {
+            margin-top: 50px !important;
+        }
+
+        #allmap {
+            width: 100%;
+            height: 400px;
+        }
+    </style>
+    <title>车报废管理后台</title>
+    <script type="text/javascript">
+        //$('.dropdown-toggle').dropdown()
+    </script>
+</head>
+<body>
+    <div class="back-stage-top">
+        <h1 class="pull-left">车报废管理后台</h1>
+        <h1 class="pull-right text-primary" id="loginout" style="margin-left:20px;cursor:pointer;font-size:18px;margin-right:50px;" onclick="loginout()">退出</h1>
+        <h1 class="pull-right text-primary" id="loginusername" style="margin-left:20px;font-size:18px;">用户名：张三</h1>
+    </div>
+    <div class="backnav">
+        <ul class="backnav">
+            <li><a href="index.html">首页</a></li>
+            <li class="cur"><a href="orderlist.html">订单管理</a></li>
+            <li><a href="scraplist.html">报废汽车</a></li>
+            <li><a href="jiulist.html">旧件回收</a></li>
+            <li><a href="#">财务管理</a></li>
+            <li><a href="system.html">系统设置</a></li>
+        </ul>
+    </div>
+    <div class="tablebox">
+        <ol class="breadcrumb m-t-10">
+            <li><a href="index.html">首页</a></li>
+            <li><a href="orderlist.html">订单管理</a></li>
+            <li>订单处理</li>
+        </ol>
+        <!--车辆信息-->
+        <h2 class="text-center ordnum"></h2>
+        <div class="col-md-6">
+            <h4 class="page-header"><span class="glyphicon glyphicon-list-alt m-l-15"></span> 车辆信息</h4>
+            <table class="tablelist">
+                <tr>
+                    <th width="120" class="text-right"><span class="redcolor">*</span>车牌号：</th>
+                    <td><input class="form-control carnum" placeholder="" type="text" /></td>
+                </tr>
+                <tr>
+                    <th width="120" class="text-right"><span class="redcolor">*</span>车架号：</th>
+                    <td><input class="form-control carjia" placeholder="" type="text" /></td>
+                </tr>
+                <tr>
+                    <th width="120" class="text-right"><span class="redcolor">*</span>车辆型号：</th>
+                    <td><input class="form-control carxing" disabled="disabled" placeholder="" type="text" /></td>
+                </tr>
+                <tr>
+                    <th width="120" class="text-right"><span class="redcolor">*</span>报案号：</th>
+                    <td><input class="form-control carbao" placeholder="" type="text" /></td>
+                </tr>
+            </table>
+        </div>
+        <!--end 车辆信息-->
+        <!--取车信息-->
+        <div class="col-md-6">
+            <h4 class="page-header"><span class="glyphicon glyphicon-list-alt m-l-15"></span> 取车信息</h4>
+            <table class="tablelist">
+                <tr>
+                    <th width="120" class="text-right"><span class="redcolor">*</span>取车联系人：</th>
+                    <td>
+                        <div class="input-group">
+                            <input type="text" id="changren" class="form-control" placeholder="" />
+                            <span class="input-group-btn">
+                                <button class="btn btn-default quan" type="button">常用联系人</button>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th width="120" class="text-right"><span class="redcolor">*</span>联系人电话：</th>
+                    <td><input class="form-control perphone" placeholder="" required="" autofocus="" type="text" /></td>
+                </tr>
+
+                <tr>
+                    <th width="120" class="text-right"><span class="redcolor">*</span>取车时间：</th>
+                    <td>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="checktime" placeholder="00-00-00" />
+                            <!--<span role="button"  class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>-->
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th width="120" class="text-right"><span class="redcolor">*</span>取车地址：</th>
+                    <td>
+                        <input class="form-control setmap" placeholder="" required="" autofocus="" type="text" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <!--end 取车信息-->
+        <div class="clearfix"></div>
+        <!--配件信息-->
+        <div class="clearfix"></div>
+        <div>
+            <div class="page-header">
+                <h4 class="pull-left"><span class="glyphicon glyphicon-list-alt m-l-15"></span> 配件信息</h4>
+                <!--<button type="button" class="btn btn-primary pull-right peibtn" >+ 添加配件</button>-->
+                <div class="clearfix"></div>
+            </div>
+            <table class="table table-striped addtab">
+                <thead>
+                    <tr>
+                        <th>配件分类</th>
+                        <th>配件名称</th>
+                        <th>零件编号</th>
+                        <th>备注</th>
+                        <th width="50%">配件照片</th>
+                        <th>编辑</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <!--end 配件信息-->
+        <div class="col-md-12">
+            <h4 class="page-header"><span class="glyphicon glyphicon-list-alt m-l-15"></span> 派单信息</h4>
+            <table class="tablelist">
+                <tr>
+                    <th width="120" class="text-right"><span class="redcolor">*</span>业务员：</th>
+                    <td>
+                        <select class="form-control" id="ye">
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th width="120" class="text-right">派单备注：</th>
+                    <td><textarea class="form-control" id='paibei' rows="3"></textarea></td>
+                </tr>
+            </table>
+        </div>
+        <div class="clearfix page-header p-tb30"></div>
+        <div class="text-center m-b-20">
+            <button class="btn btn-primary btn-lg m-r-10 yichang">异常订单</button>
+            <button class="btn btn-primary btn-lg m-r-10 zancun">暂存</button>
+            <button class="btn btn-primary btn-lg paidan">派单</button>
+        </div>
+    </div>
+    <div class="hide">
+        <div id="detailState">
+            <table class="table table-striped addren">
+                <thead><tr><th width="200">姓名</th><th>电话</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    <div class="hide">
+        <div id="showmap">
+            <table>
+                <tr>
+                    <td>
+                        <input style="width:400px;" type="text" class="form-control" placeholder="请输入需要检索的地址" name="address" id="address" onkeyup="searchAddress();" value="" />
+                        <input type="hidden" id="addressLonglat" name="addressLonglat" value="" />
+                    </td>
+                    <td style="width: 10px;"></td>
+                </tr>
+            </table>
+            <br />
+            <div id="allmap"></div>
+        </div>
+    </div>
+    <div class="hide">
+        <div id="peijian">
+            <!--配件信息-->
+            <div class="m-b-20">
+                <h4 class="page-header"><span class="glyphicon glyphicon-list-alt m-l-15"></span> 配件信息</h4>
+                <table class="tablelist">
+                    <tr>
+                        <th width="120" class="text-right"><span class="redcolor">*</span>配件分类：</th>
+                        <td>
+                            <select class="form-control" id="m-lei"></select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th width="120" class="text-right"><span class="redcolor">*</span>配件名称：</th>
+                        <td>
+                            <select class="form-control" id="m-name"></select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th width="120" class="text-right">零件编号：</th>
+                        <td><input class="form-control num" placeholder="" required="" autofocus="" type="text" /></td>
+                    </tr>
+                    <tr>
+                        <th width="120" class="text-right">备注：</th>
+                        <td><textarea class="form-control bei" rows="3"></textarea></td>
+                    </tr>
+                </table>
+            </div>
+            <!--end 配件信息-->
+            <div class="m-b-20" s=s>
+                <h4 class="page-header"><span class="glyphicon glyphicon-list-alt m-l-15"></span> 配件照片</h4>
+                <div class="row">
+                    <div class="col-xs-4 col-md-4 jiapic" style="display: none;">
+                        <div class="thumbnail img-input-box">
+                            <img src="../img/addimg-bg.png" alt="" onclick="addactpic()" />
+                            <form enctype="multipart/form-data" method="post">
+                                <input style="display: none;" type="file" name="upload" class="upload2" onchange="doUpload2()" />
+                            </form>
+                        </div>
+                    </div>
+                    <div class="cunpic" style="clear: both;">
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="hide">
+        <div id="paidan">
+            确定派单吗？
+        </div>
+    </div>
+    <div class="hide">
+        <div id="yidan">
+            确定为异常订单吗？
+        </div>
+    </div>
+    <div class="hide">
+        <div id="zancun">
+            暂存订单吗？
+        </div>
+    </div>
+    <script src="../js/bootstrap-datetimepicker.min.js"></script>
+    <script src="../js/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="../js/comm.js"></script>
+    <script>
+        (function ($) {
+            $.getUrlParam = function (name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if (r != null) return unescape(r[2]);
+                return null;
+            }
+        })(jQuery);
+        var id = $.getUrlParam('id');
+        layui.use('layer', function () {
+
+        });
+        $.ajax({
+            type: "get",
+            url: href + 'order/' + id,
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                if (data.msg == "success") {
+                    var d = data.data;
+                    $(".ordnum").html("订单信息:" + d.orderNo);
+                    $(".carnum").val(d.carNumber);
+                    $(".carjia").val(d.carFrameNumber);
+                    $(".carxing").val(d.carModelNumber);
+                    $(".carbao").val(d.reportNo);
+                    $("#changren").val(d.takeCarContacts);
+                    $(".perphone").val(d.takeCarContactNumber);
+                    $("#checktime").val(d.takeCarTime);
+                    $(".setmap").val(d.takeCarAddress);
+                    $("#addressLonglat").val(d.coordinate);
+                    pai(d.orderAreasId, "");
+                    $("#ye").val(d.agentUserid);
+                    $("#paibei").val(d.auditRemark);
+                    var dd = d.carScrapOrderAutopartsList;
+                    if (dd.length) {
+                        var otr = "";
+                        for (var i = 0; i < dd.length; i++) {
+                            otr += '<tr>'
+                            otr += '<td>' + dd[i].partsCaregoryName + '</td>'
+                            otr += '<td>' + dd[i].partsTypeName + '</td>'
+                            otr += '<td>' + dd[i].partsNum + '</td>'
+                            otr += '<td>' + dd[i].remark + '</td>';
+                            var pics = dd[i].autoPartsPictures;
+                            var obj = "";
+                            var urls = [], ids = [];
+                            if (pics.length) {
+                                for (var j = 0; j < pics.length; j++) {
+                                    console.log(j)
+                                    urls.push(pics[j].url);
+                                    ids.push(pics[j].id)
+                                    obj += '<div class="col-md-3 col-xs-6">'
+                                    obj += '<div class="thumbnail"><img src="' + pics[j].url + '" /></div>'
+                                    obj += '</div>'
+                                }
+                            };
+                            var urrs = urls.join();
+                            var idss = ids.join();
+                            otr += '<td> <div class="row">' + obj + '</div></td>'
+                            //                      otr += '<td>'+dd[i].amount+'</td>';
+                            //                      otr += '<td>'+dd[i].receiveTime+'</td></tr>';
+                            otr += '<td><a data-id="' + dd[i].id + '" data-ids="' + idss + '" data-url="' + urrs + '" data-bei="' + dd[i].remark + '" data-num="' + dd[i].partsNum + '" data-name="' + dd[i].partsType + '" data-lei="' + dd[i].partsCaregoryId + '" role="button" class="btn btn-default btn-sm bian"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>编辑 </a>'
+                            otr += '</td></tr>'
+                            //                    if(dd[i].orderStatus==1){
+                            //                    otr += '<button data-id="'+dd[i].id+'" onclick="deldata(this)" type="button" class="btn btn-default btn-sm" ><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除 </button></td></tr>'
+                            //                      }else{
+                            //                     otr += '</td></tr>'
+                            //                      }
+
+                        };
+                        $(".addtab tbody").html(otr);
+                        //初始化话图片
+                        $(".addtab tbody  img").zoomify();
+                    }
+                }
+            }
+        });
+        //常用联系人
+        $(document).delegate('.quan', 'click', function (event) {
+            event.preventDefault();
+            $.ajax({
+                type: "get",
+                url: href + 'commonContacts?page=1&rows=10',
+                dataType: "json",
+                success: function (data) {
+                    if (data.msg == "success") {
+                        var d = data.data.rows;
+                        var otr = "";
+                        for (var i = 0; i < d.length; i++) {
+                            otr += '<tr><td><input type="radio" name="con-per"  class="dancheck" >   ' + d[i].contactName + '</td><td>' + d[i].contactTelephone + '</td></tr>'
+                        };
+                        $(".addren tbody").html(otr)
+                    }
+                }
+            })
+            $('#detailState').dialog({
+                title: '常用联系人',
+                onClose: function () {
+                    $(this).dialog('close');
+                },
+                buttons: [{
+                    text: '取消',
+                    'click': function () {
+                        $(this).dialog('close');
+                    }
+                }, {
+                    text: '确定',
+                    'class': 'btn-primary',
+                    'click': function () {
+                        for (var i = 0; i < $(".dancheck").length; i++) {
+                            if ($(".dancheck").eq(i).prop("checked") == true) {
+                                $("#changren").val($(".dancheck").eq(i).parent().parent().find("td").eq(0).text())
+                            }
+                        }
+                        $('#detailState').dialog('close')
+                    }
+                }]
+            })
+        });
+        //选择时间
+        $('#checktime').datetimepicker({
+            format: 'yyyy-mm-dd hh:00:00',
+            language: 'zh-CN',
+            autoclose: 1,
+            minView: "day",
+            hoursDisabled: []
+        });
+        //地图
+        var map = new BMap.Map("allmap");
+        map.centerAndZoom(new BMap.Point(116.4136103013, 39.9110666857), 11);
+        var local = new BMap.LocalSearch(map, {
+            renderOptions: { map: map }
+        });
+        function searchAddress() {
+            var address = $("#address").val();
+            if (address != '' && address != null && typeof (address) != "undefined") {
+                local.search(address);
+            }
+        }
+        //根据IP定位到城市
+        function myFun(result) {
+            var longlat = '${longlat}';
+            if (longlat != '' && longlat != null && typeof (longlat) != "undefined") {
+                map.centerAndZoom(new BMap.Point(longlat.split(",")[0], longlat.split(",")[1]), 18);
+                var marker = new BMap.Marker(new BMap.Point(longlat.split(",")[0], longlat.split(",")[1]));
+                map.addOverlay(marker);
+            } else {
+                var cityName = result.name;
+                map.setCenter(cityName);
+            }
+        }
+        var myCity = new BMap.LocalCity();
+        var lng = "", lat = "";
+        myCity.get(myFun);
+        var geoc = new BMap.Geocoder();
+        map.addEventListener("click", function (e) {
+            //清楚地图上的marker
+            map.clearOverlays();
+            //通过点击百度地图，可以获取到对应的point, 由point的lng、lat属性就可以获取对应的经度纬度
+            var pt = e.point;
+            var marker = new BMap.Marker(new BMap.Point(pt.lng, pt.lat));
+            map.addOverlay(marker);
+            geoc.getLocation(pt, function (rs) {
+                //addressComponents对象可以获取到详细的地址信息
+                var addComp = rs.addressComponents;
+                var site = addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber;
+                $("#address").val(site);
+                $(".setmap").val(site);
+                lng = pt.lng;
+                lat = pt.lat;
+                map.centerAndZoom(new BMap.Point(pt.lng, pt.lat), 18);
+                //将对应的HTML元素设置值
+                $("#addressLonglat").val(pt.lng + "," + pt.lat);
+            });
+        });
+        //点击打开地图
+        $(document).delegate('.setmap', 'click', function (event) {
+            event.preventDefault();
+            local.search('北京')
+            $('#showmap').dialog({
+                title: '取车地址',
+                onClose: function () {
+                    $(this).dialog('close');
+                },
+                buttons: [{
+                    text: '取消',
+                    'click': function () {
+                        $(this).dialog('close');
+                    }
+                }, {
+                    text: '确定',
+                    'class': 'btn-primary',
+                    'click': function () {
+                        $('#showmap').dialog('close');
+                    }
+                }]
+            })
+        });
+        //编辑配件
+        $(document).delegate('.bian', 'click', function (event) {
+            event.preventDefault();
+            var num = $(this).attr("data-num");
+            var bei = $(this).attr("data-bei");
+            var leis = $(this).attr("data-lei");
+            var name = $(this).attr("data-name");
+            var urls = $(this).attr("data-url");
+            var ids = $(this).attr("data-ids");
+            var peiid = $(this).attr("data-id");
+            var arrpic = urls.split(",");
+            var idjoins = ids.split(",");
+            var tt = $(this).parent().parent();
+            lei(leis);
+            qibie(leis, name);
+            $(".num").val(num);
+            $(".bei").val(bei);
+            var otr = "";
+            if (arrpic.length) {
+                for (var i = 0; i < arrpic.length; i++) {
+                    otr += '<div class="col-xs-4 col-md-4 addpic" data-id="' + idjoins[i] + '" data-url="' + arrpic[i] + '">'
+                    otr += '<div class="thumbnail">'
+                    otr += '<img src="' + arrpic[i] + '" alt="" />'
+                    //             otr += '<button type="button" class="del-btn"><span onclick="del(this)" class="glyphicon glyphicon-remove"></span></button>'
+                    otr += '</div></div>'
+                }
+            };
+            $(".cunpic").html(otr)
+            $('#peijian').dialog({
+                title: '编辑配件',
+                onClose: function () {
+                    $(this).dialog('close');
+                },
+                buttons: [{
+                    text: '取消',
+                    'click': function () {
+                        $(this).dialog('close');
+                    }
+                }, {
+                    text: '确定',
+                    'class': 'btn-primary',
+                    'click': function () {
+                        $.ajax({
+                            type: "PUT",
+                            url: href + "autoparts/" + peiid,
+                            data: {
+                                orderId: id,
+                                partsType: $('#m-name option:selected').data('type'),
+                                partsNum: $(".num").val(),
+                                remark: $(".bei").val()
+                            },
+                            dataType: "json",
+                            success: function (data) {
+                                if (data.msg == "success") {
+                                    layer.msg('<span style="font-size:20px">编辑成功</span>', {
+                                        time: 1000, //2s后自动关闭
+                                    }, function () {
+                                        var otr = ""
+                                        otr += '<td>' + $('#m-lei option:selected').val() + '</td>'
+                                        otr += '<td>' + $('#m-name option:selected').val() + '</td>'
+                                        otr += '<td>' + $(".num").val() + '</td>'
+                                        otr += '<td>' + $(".bei").val() + '</td>'
+                                        if ($(".addpic").length) {
+                                            var obj = "";
+                                            var urls = [], idss = [];
+                                            for (var i = 0; i < $(".addpic").length; i++) {
+                                                urls.push($(".addpic").eq(i).attr("data-url"));
+                                                idss.push($(".addpic").eq(i).attr("data-id"))
+                                                obj += '<div class="col-md-3 col-xs-6">'
+                                                obj += '<div class="thumbnail"><img src="' + $(".addpic").eq(i).attr("data-url") + '" /></div>'
+                                                obj += '</div>'
+                                            }
+                                        }
+                                        otr += '<td> <div class="row">' + obj + '</div></td>'
+                                        otr += '<td><a data-id="' + peiid + '" data-ids="' + idss.join() + '" data-url="' + urls.join() + '" data-bei="' + $(".bei").val() + '" data-num="' + $(".num").val() + '" data-name="' + $('#m-name option:selected').data('type') + '" data-lei="' + $('#m-lei option:selected').data('type') + '" role="button" class="btn btn-default btn-sm bian"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>编辑 </a>'
+                                        otr += '</td>'
+                                        tt.html(otr);
+                                        $('#peijian').dialog('close');
+                                    });
+
+
+                                }
+                            }
+                        })
+
+
+
+                    }
+                }]
+            })
+        });
+        //派单人员下拉框
+        function pai(x, y) {
+            $.ajax({
+                type: "get",
+                url: href + "user/queryReceiveUser",
+                data: {
+                    businessType: 2,
+                    areaid: x
+                },
+                async: false,
+                dataType: "json",
+                success: function (data) {
+                    var otr = '';
+                    var d = data.data;
+                    if (d.length) {
+                        for (var i = 0; i < d.length; i++) {
+                            otr += '<option value="' + d[i].id + '">' + d[i].realName + '</option>'
+                        };
+                        $("#ye").html('<option value="">请选择派单人员</option>' + otr);
+                        $("#ye option[value='" + y + "']").prop("selected", true);
+                    } else {
+                        $("#ye").html('<option value="">请选择派单人员</option>');
+                    }
+                }
+            });
+        }
+        //配件分类
+        function lei(x) {
+            $.ajax({
+                type: "get",
+                url: href + "carPartsCategory",
+                data: {
+                    sessionid: ""
+                },
+                dataType: "json",
+                success: function (data) {
+                    var otr = '';
+                    var d = data.data;
+                    if (d.length) {
+                        for (var i = 0; i < d.length; i++) {
+                            otr += '<option data-type="' + d[i].id + '">' + d[i].partsCategoryName + '</option>'
+                        };
+                        $("#m-lei").html('<option data-type="">请选择配件分类</option>' + otr);
+                        $("#m-lei option[data-type='" + x + "']").prop("selected", true);
+                    } else {
+                        $("#m-lei").html('<option data-type="">请选择配件分类</option>');
+                        $("#m-name").html('<option data-type="">请选择配件名称</option>');
+                    }
+                }
+            });
+        }
+        //配件名称变化
+        function qibie(id, y) {
+            $.ajax({
+                type: "get",
+                url: href + "carParts",
+                data: {
+                    categoryId: id
+                },
+                dataType: "json",
+                success: function (data) {
+                    var otr = '';
+                    var d = data.data;
+                    if (d.length) {
+                        for (var i = 0; i < d.length; i++) {
+                            otr += '<option data-type="' + d[i].id + '">' + d[i].partsName + '</option>'
+                        };
+                        $("#m-name").html(otr);
+                        $("#m-name option[data-type='" + y + "']").prop("selected", true);
+                    } else {
+                        $("#m-name").html('<option data-type="">请选择配件名称</option>');
+                    }
+                }
+            });
+        };
+        //监听配件类型的变化
+        $('#m-lei').on('change', function (event) {
+            event.preventDefault();
+            var id = $('#m-lei option:selected').data('type');
+            if (id == "") {
+                $("#m-lei").html('<option data-type="">请选择配件分类</option>');
+                $("#m-name").html('<option data-type="">请选择配件名称</option>');
+            } else {
+                qibie(id, "")
+            }
+        })
+
+        //上传图片
+        function doUpload2() {
+            var formData = new FormData();
+            if ($(".upload2")[0].files.length == 0) {
+                alert("请选择pc母版！");
+                return false;
+            };
+            formData.append("files", $(".upload2")[0].files[0]);
+            $.ajax({
+                url: "http://60.205.223.142/carscraporder-attachment/upload/attachmet",
+                type: "POST",
+                data: formData,
+                dataType: "json",
+                async: false,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    var otr = ""
+                    if (data.msg == "success") {
+                        if (data.data.length) {
+                            for (var i = 0; i < data.data.length; i++) {
+                                otr += '<div class="col-xs-4 col-md-4 addpic" data-id="' + data.data[i].id + '" data-url="' + data.data[i].url + '">'
+                                otr += '<div class="thumbnail">'
+                                otr += '<img src="' + data.data[i].url + '" alt="" />'
+                                otr += '<button type="button" class="del-btn"><span onclick="del(this)" class="glyphicon glyphicon-remove"></span></button>'
+                                otr += '</div></div>'
+                            }
+                        }
+
+                    };
+                    $(".cunpic").append(otr)
+                },
+                error: function (returndata) {
+                    alert("操作失败");
+                }
+            });
+        };
+        //点击添加图片
+        function addactpic() {
+            $(".upload2").get(0).click();
+        }
+        //删除图片
+        function del(x) {
+            $(x).parent().parent().parent().remove()
+        }
+        //删除列表数据
+        function deldata(x) {
+            $(x).parent().parent().remove()
+        }
+        //返回
+        $(".goback").on("click", function (event) {
+            event.preventDefault();
+            window.history.go(-1)
+        })
+        //数据提交
+        $(".adddata").on("click", function (event) {
+            event.preventDefault();
+            if ($(".carnum").val() == "") {
+                layer.msg('<span style="font-size:20px">车牌号不能为空</span>', {
+                    time: 2000, //2s后自动关闭
+                });
+                return;
+            };
+            var s = lng + "," + lat;
+            var otr1 = [];
+            if ($(".bian").length) {
+                for (var i = 0; i < $(".bian").length; i++) {
+                    var arr = $(".bian").eq(i).attr("data-ids").split(",");
+                    var otr2 = [];
+                    for (var j = 0; j < arr.length; j++) {
+                        otr2.push({
+                            attachmentId: arr[j],
+                            pritureCategory: 1
+                        })
+                    }
+                    otr1.push({
+                        pictures: otr2,
+                        partsType: $(".bian").eq(i).attr("data-name"),
+                        partsNum: $(".bian").eq(i).attr("data-num"),
+                        remark: $(".bian").eq(i).attr("data-bei")
+                    })
+                }
+            };
+            $.ajax({
+                type: "post",
+                url: href + "order",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({
+                    carNumber: $(".carnum").val(),
+                    carFrameNumber: $(".carjia").val(),
+                    carModelNumber: $(".carxing").val(),
+                    orderType: 2,
+                    takeCarContacts: $("#changren").val(),
+                    takeCarContactNumber: $(".perphone").val(),
+                    takeCarTime: $("#checktime").val(),
+                    takeCarAddress: $(".setmap").val(),
+                    coordinate: s,
+                    reportNo: $(".carbao").val(),
+                    carScrapOrderAutopartsList: otr1
+                }),
+                dataType: "json",
+                success: function (data) {
+                    if (data.msg == "success") {
+                        layer.msg('<span style="font-size:20px">数据提交成功</span>', {
+                            time: 1000, //2s后自动关闭
+                        }, function () {
+                            window.location.href = "reclaimlist.html"
+                        });
+
+
+                    }
+                }
+            });
+        });
+        //根据车架号查询车型名称
+        $(".carjia").on("blur", function () {
+
+            $.ajax({
+                type: "get",
+                url: href + "carModel?vin=" + $(".carjia").val(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.msg == "success") {
+                        if (data.data == "") {
+                            $(".carxing").val("")
+                            $(".carxing").attr("placeholder", '车辆型号无法识别，请自行填写')
+                            $(".carxing").attr("disabled", false)
+                        } else {
+                            $(".carxing").attr("disabled", "disabled");
+                            $(".carxing").val(data.data)
+                        }
+
+                    }
+                }
+            });
+        });
+        //派单
+        $(document).delegate('.paidan', 'click', function (event) {
+            event.preventDefault();
+            $('#paidan').dialog({
+                title: '派单',
+                onClose: function () {
+                    $(this).dialog('close');
+                },
+                buttons: [{
+                    text: '取消',
+                    'click': function () {
+                        $(this).dialog('close');
+                    }
+                }, {
+                    text: '确定',
+                    'class': 'btn-primary',
+                    'click': function () {
+                        $.ajax({
+                            type: "PUT",
+                            url: href + "order/audit/" + id,
+                            data: {
+                                auditorderStatus: 2,
+                                auditRemark: $("#paibei").val(),
+                                agentUserid: $('#ye option:selected').val(),
+                                carNumber: $(".carnum").val(),
+                                carFrameNumber: $(".carjia").val(),
+                                carModelNumber: $(".carxing").val(),
+                                reportNo: $(".carbao").val(),
+                                takeCarContacts: $("#changren").val(),
+                                takeCarContactNumber: $(".perphone").val(),
+                                takeCarTime: $("#checktime").val(),
+                                takeCarAddress: $(".setmap").val(),
+                                coordinate: $("#addressLonglat").val()
+                            },
+                            dataType: "json",
+                            success: function (data) {
+                                if (data.msg == "success") {
+                                    layer.msg('<span style="font-size:20px">派单成功</span>', {
+                                        time: 1000, //2s后自动关闭
+                                    }, function () {
+                                        $('#paidan').dialog('close');
+                                        window.location.href = "orderlist.html"
+                                    });
+
+
+                                }
+                            }
+                        })
+                    }
+                }]
+            })
+        });
+        //异常订单
+        $(document).delegate('.yichang', 'click', function (event) {
+            event.preventDefault();
+            $('#yidan').dialog({
+                title: '异常订单',
+                onClose: function () {
+                    $(this).dialog('close');
+                },
+                buttons: [{
+                    text: '取消',
+                    'click': function () {
+                        $(this).dialog('close');
+                    }
+                }, {
+                    text: '确定',
+                    'class': 'btn-primary',
+                    'click': function () {
+                        $.ajax({
+                            type: "PUT",
+                            url: href + "order/audit/" + id,
+                            data: {
+                                auditorderStatus: "8",
+                                carNumber: $(".carnum").val(),
+                                carFrameNumber: $(".carjia").val(),
+                                carModelNumber: $(".carxing").val(),
+                                reportNo: $(".carbao").val(),
+                                takeCarContacts: $("#changren").val(),
+                                takeCarContactNumber: $(".perphone").val(),
+                                takeCarTime: $("#checktime").val(),
+                                takeCarAddress: $(".setmap").val(),
+                                coordinate: $("#addressLonglat").val(),
+                                agentUserid: $("#ye option:selected").val(),
+                                auditRemark: $("#paibei").val()
+                            },
+                            dataType: "json",
+                            success: function (data) {
+                                if (data.msg == "success") {
+                                    layer.msg('<span style="font-size:20px">提交成功</span>', {
+                                        time: 1000, //2s后自动关闭
+                                    }, function () {
+                                        $('#yidan').dialog('close');
+                                        window.location.href = "orderlist.html"
+                                    });
+
+
+                                }
+                            }
+                        })
+                    }
+                }]
+            })
+        });
+        //暂存
+        $(document).delegate('.zancun', 'click', function (event) {
+            event.preventDefault();
+            $('#zancun').dialog({
+                title: '暂存',
+                onClose: function () {
+                    $(this).dialog('close');
+                },
+                buttons: [{
+                    text: '取消',
+                    'click': function () {
+                        $(this).dialog('close');
+                    }
+                }, {
+                    text: '确定',
+                    'class': 'btn-primary',
+                        'click': function () {
+                        $.ajax({
+                            type: "PUT",
+                            url: href + "order/" + id,
+                            data: {
+                                carNumber: $(".carnum").val(),
+                                carFrameNumber: $(".carjia").val(),
+                                carModelNumber: $(".carxing").val(),
+                                reportNo: $(".carbao").val(),
+                                takeCarContacts: $("#changren").val(),
+                                takeCarContactNumber: $(".perphone").val(),
+                                takeCarTime: $("#checktime").val(),
+                                takeCarAddress: $(".setmap").val(),
+                                agentUserid: $("#ye option:selected").val(),
+                                auditRemark: $("#paibei").val()
+                            },
+                            dataType: "json",
+                            success: function (data) {
+                                if (data.msg == "success") {
+                                    layer.msg('<span style="font-size:20px">暂存成功</span>', {
+                                        time: 1000, //2s后自动关闭
+                                    }, function () {
+                                        $('#zancun').dialog('close');
+                                        window.location.href = "orderlist.html"
+                                    });
+
+
+                                }
+                            }
+                        })
+                    }
+                }]
+            })
+        });
+        clearnull();
+    </script>
+</body>
+</html>

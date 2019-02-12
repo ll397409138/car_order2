@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.car.app.carscraporder.mapper.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.car.app.carscraporder.pojo.User" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="login_name" property="loginName" jdbcType="VARCHAR" />
+    <result column="real_name" property="realName" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="password_salt" property="passwordSalt" jdbcType="VARCHAR" />
+    <result column="areaid" property="areaid" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="creater" property="creater" jdbcType="VARCHAR" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="operatortime" property="operatortime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  
+    <resultMap id="UserBO" type="com.car.app.carscraporder.bo.UserBO" extends="BaseResultMap">
+          <result column="roleName" jdbcType="VARCHAR" property="roleName" />
+          <result column="areaName" jdbcType="VARCHAR" property="areaName" />
+
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, login_name, real_name, password, password_salt, areaid, status, creater, operator, 
+    createtime, operatortime
+  </sql>
+  
+  
+  <select id="queryUserBOById" resultMap="UserBO" parameterType="java.lang.String">
+		select u.*,t.roleids,t2.areasids,t.roleName, t2.areaName from sys_user u left join (
+          select userid,GROUP_CONCAT(id) as roleids,GROUP_CONCAT(roleName) as roleName from 
+           (select r.*,ur.userid from sys_role r left join sys_user_role ur on r.id = ur.roleid ) t group by userid)t on u.id = t.userid
+        left join(
+          select userid,GROUP_CONCAT(id) as areasids,GROUP_CONCAT(areas_name) as areaName from 
+           (select a.*,ua.userid from sys_areas a left join sys_user_area ua on a.id = ua.areaid) t group by userid) t2
+          on u.id = t2.userid where u.id =#{id,jdbcType=VARCHAR}
+	</select>
+	
+	
+	<select id="queryPageUser" resultMap="UserBO"  parameterType="com.car.app.carscraporder.vo.UserVO">
+		select * from (
+		
+		select u.*,t.roleids,t2.areasids,t.roleName, t2.areaName,
+            CONCAT(",",t2.areasids,",") as areasidsCondition from sys_user u left join (
+          select userid,GROUP_CONCAT(id) as roleids,GROUP_CONCAT(roleName) as roleName from 
+           (select r.*,ur.userid from sys_role r left join sys_user_role ur on r.id = ur.roleid ) t group by userid)t on u.id = t.userid
+        left join(
+          select userid,GROUP_CONCAT(id) as areasids,GROUP_CONCAT(areas_name) as areaName from 
+           (select a.*,ua.userid from sys_areas a left join sys_user_area ua on a.id = ua.areaid) t group by userid) t2
+          on u.id = t2.userid
+        where u.status='1'
+        
+          <if test="loginName != null and loginName != ''" >
+             and u.login_name like  CONCAT('%',#{loginName},'%')  
+          </if>
+          <if test="realName != null and realName != ''" >
+             and u.real_name like  CONCAT('%',#{realName},'%')  
+          </if>
+          
+           ) t where  1=1
+            <if test="areasids != null and areasids != ''" >
+                 and LOCATE(CONCAT(',',#{areasids},','),t.areasidsCondition)>0   
+            </if>
+           
+           
+        
+        
+	</select>
+	
+	
+	<select id="queryUserBOByNameAndPassword" resultMap="UserBO" >
+		select u.*,t.roleids,t2.areasids,t.roleName, t2.areaName from sys_user u left join (
+          select userid,GROUP_CONCAT(id) as roleids,GROUP_CONCAT(roleName) as roleName from 
+           (select r.*,ur.userid from sys_role r left join sys_user_role ur on r.id = ur.roleid ) t group by userid)t on u.id = t.userid
+        left join(
+          select userid,GROUP_CONCAT(id) as areasids,GROUP_CONCAT(areas_name) as areaName from 
+           (select a.*,ua.userid from sys_areas a left join sys_user_area ua on a.id = ua.areaid) t group by userid) t2
+          on u.id = t2.userid where u.login_name=#{loginname,jdbcType=VARCHAR}  and u.status='1'
+	</select>
+  
+  <select id="getReceiveOrderPermissionUser" resultType="com.car.app.carscraporder.bo.UserSimpleBO" >
+ 
+       select DISTINCT u.* from 
+     sys_user u,sys_user_area ua,sys_areas a,sys_user_role ur,
+     sys_role r,sys_role_permission rp,sys_permission p where 
+      u.id = ua.userid and ua.areaid = a.id and
+      u.id = ur.userid and ur.roleid = r.id and 
+      r.id = rp.roleid and rp.permissionid = p.id and p.available='1'
+      and p.percode=#{permisscode,jdbcType=VARCHAR} and a.id=#{areid,jdbcType=VARCHAR}
+ 
+  </select>
+  
+</mapper>

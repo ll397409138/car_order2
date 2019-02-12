@@ -1,0 +1,578 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css" />
+    <link rel="stylesheet" href="../layui/css/layui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <script src="../js/jquery-3.1.1.min.js" type="text/javascript"></script>
+    <script src="../js/bootstrap.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../js/jquery.bootstrap.min.js"></script>
+    <script src="../js/dropdown.js" type="text/javascript"></script>
+    <script src="../js/modal.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../layui/layui.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+            a:hover {
+                text-decoration: none;
+            }
+
+        .tcdPageCode {
+            padding: 15px 20px;
+            text-align: left;
+            color: #ccc;
+            text-align: center;
+        }
+
+            .tcdPageCode a {
+                display: inline-block;
+                color: #428bca;
+                display: inline-block;
+                height: 25px;
+                line-height: 25px;
+                padding: 0 10px;
+                border: 1px solid #ddd;
+                margin: 0 2px;
+                border-radius: 4px;
+                vertical-align: middle;
+            }
+
+                .tcdPageCode a:hover {
+                    text-decoration: none;
+                    border: 1px solid #428bca;
+                }
+
+            .tcdPageCode span.current {
+                display: inline-block;
+                height: 25px;
+                line-height: 25px;
+                padding: 0 10px;
+                margin: 0 2px;
+                color: #fff;
+                background-color: #428bca;
+                border: 1px solid #428bca;
+                border-radius: 4px;
+                vertical-align: middle;
+            }
+
+            .tcdPageCode span.disabled {
+                display: inline-block;
+                height: 25px;
+                line-height: 25px;
+                padding: 0 10px;
+                margin: 0 2px;
+                color: #bfbfbf;
+                background: #f2f2f2;
+                border: 1px solid #bfbfbf;
+                border-radius: 4px;
+                vertical-align: middle;
+            }
+
+        .tijia {
+            display: inline-block;
+            width: 150px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    </style>
+    <title>车报废管理后台</title>
+    <script type="text/javascript">
+        $('.dropdown-toggle').dropdown()
+    </script>
+</head>
+<body>
+    <div class="back-stage-top">
+        <h1 class="pull-left">车报废管理后台</h1>
+        <h1 class="pull-right text-primary" id="loginout" style="margin-left:20px;cursor:pointer;font-size:18px;margin-right:50px;" onclick="loginout()">退出</h1>
+        <h1 class="pull-right text-primary" id="loginusername" style="margin-left:20px;font-size:18px;">用户名：张三</h1>
+    </div>
+    <div class="backnav">
+        <ul class="backnav">
+            <li><a href="index.html">首页</a></li>
+            <li><a href="orderlist.html">订单管理</a></li>
+            <li><a href="scraplist.html">报废汽车</a></li>
+            <li><a href="jiulist.html">旧件回收</a></li>
+            <li class="cur"><a href="moneymanage.html">财务管理</a></li>
+            <li><a href="system.html">系统设置</a></li>
+        </ul>
+    </div>
+    <div class="tablebox">
+        <div class="">
+            <ol class="breadcrumb">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="moneymanage.html">财务管理</a></li>
+            </ol>
+            <div class="searchbox">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="searchval" placeholder="订单编号/车牌号/车架号/描述/联系人/联系电话" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" id="searbtn">查询</button>
+                        </span>
+                    </div>
+                </div>
+                <div class="pull-right">
+                    <select class="img-input">
+                        <option>全部订单类型</option>
+                        <option>整车报废订单</option>
+                        <option>旧件回收订单</option>
+                    </select>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <ul class="nav nav-tabs">
+                <li role="presentation" class="active"><a href="#" data-type="3,4,5,6,7" data-url="order/getAll" class="changeye">全部</a></li>
+                <li role="presentation"><a href="#" data-type="3,4,5,6" data-url="order" class="changeye">未处理</a></li>
+                <li role="presentation"><a href="#" data-type="7" data-url="order" class="changeye">已处理</a></li>
+
+            </ul>
+            <table class="table table-striped tdmain">
+                <thead>
+                    <tr>
+                        <th>订单编号</th>
+                        <th>订单时间</th>
+                        <th>订单类型</th>
+                        <th>报案号</th>
+                        <th>车牌号</th>
+                        <th>车辆型号</th>
+                        <th>配件数量</th>
+                        <th>委托方</th>
+                        <th>订单金额</th>
+                        <th>已结算金额</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <div class="page" style="background: #fff;">
+                <div class="tcdPageCode"></div>
+            </div>
+        </div>
+    </div>
+    <div class="hide">
+        <div id="shuru">
+            <div class="form-group form-inline clearfix">
+                车牌号码：<span class="carnum"></span>
+            </div>
+            <div class="form-group form-inline clearfix">
+                车辆名称：<span class="carcheng"></span>
+            </div>
+            <div class="form-group form-inline clearfix">
+                残值金额
+                <input type="text" value="" style="width:400px;" class="form-control checkLogs" id="canmoney" placeholder="" autocomplete="off" />
+            </div>
+        </div>
+    </div>
+    <div class="hide">
+        <div id="jine">
+            <div class="form-group form-inline clearfix">
+                <table class="table table-striped jiedata">
+                    <thead>
+                        <tr>
+                            <th>配件分类</th>
+                            <th>配件名称</th>
+                            <th>零件编号</th>
+                            <th>残值金额</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="../js/jquery.page.js"></script>
+    <script src="../js/comm.js"></script>
+    <script>
+        layui.use('layer', function () {
+
+        })
+        var typedata = "";
+        var typeurl = "";
+        //点击切换数据
+        $(".changeye").on("click", function (event) {
+            event.preventDefault();
+            $(this).parent().siblings().removeClass("active");
+            $(this).parent().addClass("active");
+            var type = $(this).attr("data-type");
+            var url = $(this).attr("data-url");
+            var val = $("#searchval").val();
+            showdata(1, type, val, url);
+        });
+        $("#searbtn").on("click", function (event) {
+            event.preventDefault();
+            //var type=$(this).attr("data-type");
+            var val = $("#searchval").val();
+            showdata(1, typedata, val, typeurl);
+        });
+        function showdata(x, y, z, h) {
+            typedata = y;
+            typeurl = h;
+            $.ajax({
+                type: "get",
+                url: href + h,
+                data: {
+                    page: x,
+                    rows: 10,
+                    orderStatus: y,
+                    keyWord: z
+                },
+                contentType: "application/json",
+                dataType: "json",
+                success: function (data) {
+                    if (data.msg == "success") {
+                        var otr = "";
+                        var d = data.data.rows;
+                        if (d.length) {
+                            for (var i = 0; i < d.length; i++) {
+                                otr += '<tr>'
+                                otr += '<td>' + d[i].orderNo + '</td>'
+                                otr += '<td>' + d[i].orderTime + '</td>'
+                                otr += '<td>' + st(d[i].orderType) + '</td>'
+                                otr += '<td>' + d[i].reportNo + '</td>'
+                                otr += '<td>' + d[i].carNumber + '</td>'
+                                otr += '<td><span title="' + d[i].carModelNumberName + '" class="tijia">' + d[i].carModelNumberName + '</span></td>'
+                                if (d[i].orderType == 1) {
+                                    otr += '<td>整车</td>'
+                                } else {
+                                    otr += '<td>' + d[i].totalPartsCount + '</td>'
+                                }
+                                otr += '<td><span title="' + d[i].custormName + '" class="tijia">' + d[i].custormName + '</span></td>'
+                                if (d[i].orderType == 1) {
+                                    if (d[i].orderStatus == 7) {
+                                        otr += '<td>输 入</td>'
+                                    } else {
+                                        otr += '<td><a style="cursor:pointer;color:blue" class="zheng1" data-id="' + d[i].id + '" >输 入</a></td>'
+                                    }
+
+                                } else {
+                                    if (d[i].orderStatus == 7) {
+                                        otr += '<td>' + nux(d[i].orderAmount) + '</td>'
+                                    } else {
+                                        otr += '<td><a style="cursor:pointer;color:blue"  class="jin1" data-id="' + d[i].id + '" >' + nux(d[i].orderAmount) + '</a></td>'
+                                    }
+
+                                }
+                                otr += '<td>' + d[i].settlementAmount + '</td>'
+                                otr += '<td>'
+                                if (d[i].orderType == 1) {
+                                    if (d[i].orderStatus == 7) {
+
+                                    } else {
+                                        otr += '<button role="button" class="btn btn-default btn-sm cha" data-id="' + d[i].id + '" >'
+                                        otr += '<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>结算 </button>'
+                                    }
+
+                                } else {
+                                    if (d[i].orderStatus == 7) {
+
+                                    } else {
+                                        otr += '<button role="button" class="btn btn-default btn-sm cha2" data-id="' + d[i].id + '" >'
+                                        otr += '<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>结算 </button>'
+                                    }
+
+                                }
+                                otr += '</td></tr>'
+                            }
+                        } else {
+                            otr = '<tr><td colspan=' + $(".tdmain th").length + ' style="text-align:center">无数据</td></tr>'
+                        }
+                        $(".tdmain tbody").html(otr);
+                        for (var i = 0; i < $(".tdmain td").length; i++) {
+                            if ($(".tdmain td").eq(i).text() == null || $(".tdmain td").eq(i).text() == "null") {
+                                $(".tdmain td").eq(i).html("")
+                            }
+                        }
+                        $(".page").html("");
+                        $(".page").html('<div class="tcdPageCode"></div>');
+                        $(".tcdPageCode").createPage({
+                            pageCount: Math.ceil(data.data.total / 10),
+                            current: x,
+                            backFn: function (p) {
+                                showdata2(p, y, z, h)
+                            }
+                        });
+                    }
+
+                }
+
+            });
+        };
+        function nux(x) {
+            if (x == null || x == "null") {
+                x = "输入金额"
+            };
+            return x;
+        }
+        function showdata2(x, y, z, h) {
+            typedata = y;
+            typeurl = h;
+            $.ajax({
+                type: "get",
+                url: href + h,
+                data: {
+                    page: x,
+                    rows: 10,
+                    orderStatus: y,
+                    keyWord: z
+                },
+                contentType: "application/json",
+                dataType: "json",
+                success: function (data) {
+                    if (data.msg == "success") {
+                        var otr = "";
+                        var d = data.data.rows;
+                        if (d.length) {
+                            for (var i = 0; i < d.length; i++) {
+                                otr += '<tr>'
+                                otr += '<td>' + d[i].orderNo + '</td>'
+                                otr += '<td>' + d[i].orderTime + '</td>'
+                                otr += '<td>' + st(d[i].orderType) + '</td>'
+                                otr += '<td>' + d[i].reportNo + '</td>'
+                                otr += '<td>' + d[i].carNumber + '</td>'
+                                otr += '<td><span title="' + d[i].carModelNumberName + '" class="tijia">' + d[i].carModelNumberName + '</span></td>'
+                                if (d[i].orderType == 1) {
+                                    otr += '<td>整车</td>'
+                                } else {
+                                    otr += '<td>' + d[i].totalPartsCount + '</td>'
+                                }
+                                otr += '<td><span title="' + d[i].custormName + '" class="tijia">' + d[i].custormName + '</span></td>'
+                                if (d[i].orderType == 1) {
+                                    if (d[i].orderStatus == 7) {
+                                        otr += '<td>输 入</td>'
+                                    } else {
+                                        otr += '<td><a style="cursor:pointer;color:blue" class="zheng1" data-id="' + d[i].id + '" >输 入</a></td>'
+                                    }
+
+                                } else {
+                                    if (d[i].orderStatus == 7) {
+                                        otr += '<td>' + nux(d[i].orderAmount) + '</td>'
+                                    } else {
+                                        otr += '<td><a style="cursor:pointer;color:blue"  class="jin1" data-id="' + d[i].id + '" >' + nux(d[i].orderAmount) + '</a></td>'
+                                    }
+
+                                }
+                                otr += '<td>' + d[i].settlementAmount + '</td>'
+                                otr += '<td>'
+                                if (d[i].orderType == 1) {
+                                    if (d[i].orderStatus == 7) {
+
+                                    } else {
+                                        otr += '<button role="button" class="btn btn-default btn-sm cha" data-id="' + d[i].id + '" >'
+                                        otr += '<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>结算 </button>'
+                                    }
+
+                                } else {
+                                    if (d[i].orderStatus == 7) {
+
+                                    } else {
+                                        otr += '<button role="button" class="btn btn-default btn-sm cha2" data-id="' + d[i].id + '" >'
+                                        otr += '<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>结算 </button>'
+                                    }
+
+                                }
+                                otr += '</td></tr>'
+                            }
+                        } else {
+                            otr = '<tr><td colspan=' + $(".tdmain th").length + ' style="text-align:center">无数据</td></tr>'
+                        }
+                        $(".tdmain tbody").html(otr);
+                        for (var i = 0; i < $(".tdmain td").length; i++) {
+                            if ($(".tdmain td").eq(i).text() == null || $(".tdmain td").eq(i).text() == "null") {
+                                $(".tdmain td").eq(i).html("")
+                            }
+                        }
+                        $(".page").html("");
+                        $(".page").html('<div class="tcdPageCode"></div>');
+                        $(".tcdPageCode").createPage({
+                            pageCount: Math.ceil(data.data.total / 10),
+                            current: x,
+                            backFn: function (p) {
+                                showdata(p, y, z, h)
+                            }
+                        });
+                    }
+
+                }
+
+            });
+        }
+        showdata(1, "3,4,5,6,7", "", 'order/getAll');
+        //判断状态
+        function st(x) {
+            if (x == 1) {
+                x = "整车报废"
+            };
+            if (x == 2) {
+                x = "旧件回收"
+            };
+            return x;
+        };
+        //判断数量
+        //  function st1(x){
+        //      if(x==1){
+        //          x="整车"
+        //      };
+        //      return x;
+        //  };
+        //处理1
+        $(document).delegate('.cha', 'click', function (event) {
+            event.preventDefault();
+            var id = $(this).attr("data-id");
+            window.location.href = "order-scrap.html?id=" + id
+        });
+        //查看2
+        $(document).delegate('.kan2', 'click', function (event) {
+            event.preventDefault();
+            var id = $(this).attr("data-id");
+            window.location.href = "kanorder.html?id=" + id
+        });
+        //处理2
+        $(document).delegate('.cha2', 'click', function (event) {
+            event.preventDefault();
+            var id = $(this).attr("data-id");
+            window.location.href = "jiujie.html?id=" + id
+        });
+        //整件输入订单金额
+        $(document).delegate('.zheng1', 'click', function (event) {
+            event.preventDefault();
+            var id = $(this).attr("data-id");
+            $.ajax({
+                type: "get",
+                url: href + "order/" + id,
+                dataType: 'json',
+                success: function (data) {
+                    if (data.msg == "success") {
+                        var d = data.data;
+                        $(".carnum").html(d.carNumber);
+                        $(".carcheng").html(d.carModelNumber);
+                        $("#canmoney").val(d.orderAmount);
+                    }
+                }
+            });
+            $('#shuru').dialog({
+                title: '输入订单金额',
+                onClose: function () {
+                    $(this).dialog('close');
+                },
+                buttons: [{
+                    text: '取消',
+                    'click': function () {
+                        $(this).dialog('close');
+                    }
+                }, {
+                    text: '确定',
+                    'class': 'btn-primary',
+                        'click': function () {
+                        $.ajax({
+                            type: "PUT",
+                            url: href + "order/" + id,
+                            data: {
+                                id: id,
+                                orderAmount: parseInt($("#canmoney").val()),
+                            },
+                         
+                            dataType: "json",
+                            success: function (data) {
+                                if (data.msg == "success") {
+                                    layer.msg('<span style="font-size:20px">保存成功</span>', {
+                                        time: 1000, //2s后自动关闭
+                                    }, function () {
+                                        window.location.reload()
+                                    });
+                                }
+                            }
+                        });
+                    }
+                }]
+            })
+        });
+        //旧件输入订单金额
+        $(document).delegate('.jin1', 'click', function (event) {
+            event.preventDefault();
+            var id = $(this).attr("data-id");
+            $.ajax({
+                type: "get",
+                url: href + "autoparts/listbyorderid?orderid=" + id,
+                dataType: 'json',
+                success: function (data) {
+                    if (data.msg == "success") {
+                        var d = data.data;
+                        var otr = "";
+                        for (var i = 0; i < d.length; i++) {
+                            otr += '<tr>'
+                            otr += '<td>' + d[i].partsCaregoryName + '</td>'
+                            otr += '<td>' + d[i].partsTypeName + '</td>'
+                            otr += '<td>' + d[i].partsNum + '</td>'
+                            if (d[i].amount == null) {
+                                d[i].amount = ""
+                            }
+                            otr += '<td><input type="text"  style="width:100px;" class="form-control checkLogs cannums" data-id="' + d[i].id + '" value="' + d[i].amount + '" placeholder="" autocomplete="off"></td>'
+                            otr += '</tr>'
+                        };
+                        $(".jiedata tbody").html(otr)
+
+                    }
+                }
+            });
+            $('#jine').dialog({
+                title: '输入订单金额',
+                onClose: function () {
+                    $(this).dialog('close');
+                },
+                buttons: [{
+                    text: '取消',
+                    'click': function () {
+                        $(this).dialog('close');
+                    }
+                }, {
+                    text: '确定',
+                    'class': 'btn-primary',
+                    'click': function () {
+                        var arr = []
+                        if ($(".cannums").length) {
+                            for (var i = 0; i < $(".cannums").length; i++) {
+                                arr.push({
+                                    amount: $(".cannums").eq(i).val(),
+                                    id: $(".cannums").eq(i).attr("data-id")
+                                })
+                            }
+                        };
+                        var senddata = {
+                            parts: arr
+                        };
+                        console.log(JSON.stringify(senddata))
+                        $.ajax({
+                            type: "PUT",
+                            url: href + "autoparts/setAmount",
+                            data: JSON.stringify(senddata),
+                            contentType: "application/json;charset=utf-8",
+                            dataType: "json",
+                            success: function (data) {
+                                if (data.msg == "success") {
+                                    layer.msg('<span style="font-size:20px">保存成功</span>', {
+                                        time: 1000, //2s后自动关闭
+                                    }, function () {
+                                        window.location.reload()
+                                    });
+                                }
+                            }
+                        });
+                    }
+                }]
+            })
+        });
+        clearnull();
+    </script>
+</body>
+</html>

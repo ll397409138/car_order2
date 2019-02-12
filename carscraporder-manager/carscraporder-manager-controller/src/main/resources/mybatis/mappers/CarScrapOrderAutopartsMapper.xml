@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.car.app.carscraporder.mapper.CarScrapOrderAutopartsMapper" >
+  <resultMap id="BaseResultMap" type="com.car.app.carscraporder.pojo.CarScrapOrderAutoparts" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="parts_type" property="partsType" jdbcType="INTEGER" />
+    <result column="parts_name" property="partsName" jdbcType="VARCHAR" />
+    <result column="parts_num" property="partsNum" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="creater" property="creater" jdbcType="VARCHAR" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="operatortime" property="operatortime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, order_id, parts_type, parts_name, parts_num, remark, amount, creater, operator, 
+    createtime, operatortime
+  </sql>
+ 
+ 
+     <select id="queryBOById" resultType="com.car.app.carscraporder.bo.CarScrapOrderAutopartsBO"  parameterType="java.lang.String">
+		select v.parts_name as partsTypeName,v.partsCaregoryId,v.partsCaregoryName   ,p.* from car_scrap_order_autoparts p left join 
+		(select p.*,c.parts_category_name as partsCaregoryName,c.id as partsCaregoryId from tb_car_parts p ,
+		tb_car_parts_category c where p.parts_category_id = c.id)v on p.parts_type = v.id 
+		 where p.id= #{id,jdbcType=VARCHAR}
+	</select>
+	
+	 <select id="queryListByOrderId" resultType="com.car.app.carscraporder.bo.CarScrapOrderAutopartsBO" parameterType="java.lang.String"> 
+         select 
+         (select DISTINCT t.audit_time from car_scrap_order_audit t where t.stauts='3' and t.order_id=p.id limit 0,1) as receiveTime,
+          ( select sum(t.settlement_amount) from car_scrap_order_settlement t where t.settlement_object_id = p.id ) as settledAmount,
+         v.parts_name as partsTypeName,v.partsCaregoryId,v.partsCaregoryName   ,p.* from car_scrap_order_autoparts p left join 
+		(select p.*,c.parts_category_name as partsCaregoryName,c.id as partsCaregoryId from tb_car_parts p ,
+		tb_car_parts_category c where p.parts_category_id = c.id)v on p.parts_type = v.id 
+		 where p.order_id= #{orderid,jdbcType=VARCHAR}
+	 </select>
+	 
+	 
+	 
+	 
+	 
+	
+	  <select id="queryBOPageList" resultType="com.car.app.carscraporder.bo.CarScrapOrderPageBO" parameterType="com.car.app.carscraporder.vo.CarScrapOrderKeywordVO"> 
+		
+		
+		select  o.order_no,o.order_time,o.report_no,o.car_number,o.car_frame_number,o.carModelNumberName,
+		           o.order_type,o.take_car_time,t.id,t.order_autoparts_status as orderStatus , t.partsTypeName,t.parts_name,
+		           t.partsCaregoryName,t.amount,
+		           (select ta.storage_path from car_scrap_order_attachment a,tb_attachment ta where a.attachment_id = ta.id 
+                     and a.order_id=t.id and a.attachment_type='1' limit 0,1)as picture,
+                     case  o.client_type  when '1' then '个人'
+                     else (select  c1.customer_name from sys_client c ,sys_company c1 where c.companyid = c1.id and c.id=o.client_id) 
+                    end as custormName
+		          from(
+                   select o.car_model_number as carModelNumberName,o.*  from car_scrap_order o ) o ,
+                   (
+              select a.*,p.parts_name as partsTypeName,p.partsCaregoryName from car_scrap_order_autoparts a,(select p.*,c.parts_category_name as partsCaregoryName,c.id as partsCaregoryId from tb_car_parts p ,
+		      tb_car_parts_category c where p.parts_category_id = c.id) p where a.parts_type= p.id) t 
+              where o.id = t.order_id and o.order_type='2' and o.isremove='0' and t.is_valid='1'
+
+              
+              <if test="vo.keyWord != null" >
+		       and (o.order_no  like CONCAT('%',#{vo.keyWord},'%')  
+                    or o.report_no like CONCAT('%',#{vo.keyWord},'%') 
+                    or o.car_number like CONCAT('%',#{vo.keyWord},'%') 
+                    or o.car_frame_number like CONCAT('%',#{vo.keyWord},'%') 
+                    or o.take_car_contacts like CONCAT('%',#{vo.keyWord},'%') 
+                    or o.take_car_contact_number like CONCAT('%',#{vo.keyWord},'%') 
+                    or o.car_model_number like CONCAT('%',#{vo.keyWord},'%'))
+		 </if>
+		 
+		      <if  test="vo.araesidList!=null and vo.araesidList.size()>0">
+		     and o.order_areas_id in 
+		     <foreach collection="vo.araesidList" index="index"  item="item"  open="(" separator=","  close=")">
+		              ${item}
+		     </foreach>
+		    </if>
+		
+		 
+		
+          
+           <if test="vo.orderStatusList != null and vo.orderStatusList.size()>0">
+		      and t.order_autoparts_status in 
+		        <foreach collection="vo.orderStatusList" index="index"  item="item"  open="(" separator=","  close=")">
+		                ${item}
+		         </foreach>
+		  </if>
+		  
+		  <if  test="vo.earlyWarningDate!=null">
+		          <![CDATA[ and  t.operatortime <=#{vo.earlyWarningDate} ]]>
+		   </if>
+		 
+		 
+		
+		  order by t.operatortime desc
+		 
+	 </select> 
+	 
+	 
+	  <select id="getSortingParts" resultType="com.car.app.carscraporder.bo.CarScrapOrderPageBO" parameterType="com.car.app.carscraporder.vo.CarScrapOrderKeywordVO"> 
+		
+		
+		select  o.order_no,o.order_time,o.report_no,o.car_number,o.car_frame_number,o.carModelNumberName,
+		           o.order_type,o.take_car_time,t.id,t.order_autoparts_status as orderStatus , t.partsTypeName,t.parts_name,
+		           t.partsCaregoryName,t.amount,
+		           (select ta.storage_path from car_scrap_order_attachment a,tb_attachment ta where a.attachment_id = ta.id 
+                     and a.order_id=t.id and a.attachment_type='1' limit 0,1)as picture,
+                     case  o.client_type  when '1' then '个人'
+                     else (select  c1.customer_name from sys_client c ,sys_company c1 where c.companyid = c1.id and c.id=o.client_id) 
+                    end as custormName
+		          from(
+                   select o.car_model_number as carModelNumberName,o.*  from car_scrap_order o ) o ,
+                   (
+              select a.*,p.parts_name as partsTypeName,p.partsCaregoryName from car_scrap_order_autoparts a,(select p.*,c.parts_category_name as partsCaregoryName,c.id as partsCaregoryId from tb_car_parts p ,
+		      tb_car_parts_category c where p.parts_category_id = c.id) p where a.parts_type= p.id) t 
+              where o.id = t.order_id and o.order_type='2'  and t.order_autoparts_status= '5'
+
+              
+              <if test="vo.keyWord != null" >
+		       and (o.order_no  like CONCAT('%',#{vo.keyWord},'%')  
+                    or o.report_no like CONCAT('%',#{vo.keyWord},'%') 
+                    or o.car_number like CONCAT('%',#{vo.keyWord},'%') 
+                    or o.car_frame_number like CONCAT('%',#{vo.keyWord},'%') 
+                    or o.take_car_contacts like CONCAT('%',#{vo.keyWord},'%') 
+                    or o.take_car_contact_number like CONCAT('%',#{vo.keyWord},'%') 
+                    or o.car_model_number like CONCAT('%',#{vo.keyWord},'%'))
+		 </if>
+		 
+		  <if  test="vo.araesidList!=null and vo.araesidList.size()>0">
+		     and o.order_areas_id in 
+		     <foreach collection="vo.araesidList" index="index"  item="item"  open="(" separator=","  close=")">
+		              ${item}
+		     </foreach>
+		    </if>
+		
+		
+		<choose>
+		     <when test="vo.isSorting==true">
+		              and t.sorting_state is not null
+		     </when>
+		     <otherwise>
+		             and t.sorting_state is  null
+		     </otherwise>
+		</choose>
+		
+		
+          
+          
+		 
+		
+		  order by t.operatortime desc
+		 
+	 </select> 
+	 
+	 
+	 
+	 
+	 
+	 <select id="queryBOPageListCount" resultType="java.lang.Long" parameterType="com.car.app.carscraporder.vo.CarScrapOrderKeywordVO"> 
+		      select          
+		    count(*) from 
+		         (
+             select v.carname as carModelNumberName,o.*  from car_scrap_order o left join tb_car_vehicle v on o.car_model_number = v.id) o ,
+              (
+              select a.*,p.parts_name as partsTypeName,p.partsCaregoryName from (
+                      select DISTINCT oa.* from  car_scrap_order_autoparts oa , 
+                       car_scrap_order_audit au where oa.id = au.order_id
+                        <if test="vo.userid != null" >
+                            and  au.auditor=#{vo.userid}
+                        </if>
+                         <if test="vo.orderStatus != null" >
+                             and  au.stauts=#{vo.orderStatus}
+                         </if>
+            
+                        )a ,
+                     ( select a.*,p.parts_name as partsTypeName,p.partsCaregoryName from car_scrap_order_autoparts a,(select p.*,c.parts_category_name as partsCaregoryName,c.id as partsCaregoryId from tb_car_parts p ,
+		          tb_car_parts_category c where p.parts_category_id = c.id) p where a.parts_type= p.id)
+                  p where a.parts_type= p.id) t where o.id = t.order_id and o.order_type='2'
+              
+              <if test="vo.keyWord != null" >
+		       and (o.order_no  like CONCAT('%',#{vo.keyWord},'%')  
+                    or o.report_no like CONCAT('%',#{vo.keyWord},'%') 
+                    or o.car_number like CONCAT('%',#{vo.keyWord},'%') 
+                    or o.car_frame_number like CONCAT('%',#{vo.keyWord},'%') 
+                    or o.take_car_contacts like CONCAT('%',#{vo.keyWord},'%') 
+                    or o.take_car_contact_number like CONCAT('%',#{vo.keyWord},'%') 
+                    or o.carModelNumberName like CONCAT('%',#{vo.keyWord},'%'))
+		 </if>
+		
+		
+	 </select> 
+	 
+	 
+	 <select id="queryHistoryBOPageList" resultType="com.car.app.carscraporder.bo.CarScrapOrderPageBO" parameterType="com.car.app.carscraporder.vo.CarScrapOrderKeywordVO"> 
+		  
+		  select * from (
+                select  parts.*,audit.audit_time,audit.auditor,audit.remark as auditRemark,audit.stauts  as orderStatus,c.*,
+                  (select ta.storage_path from car_scrap_order_attachment a,tb_attachment ta where a.attachment_id = ta.id 
+                     and a.order_id=parts.id and a.attachment_type='1' limit 0,1)as picture,
+
+                case  parts.client_type  when '1' then '个人'
+                     else (select  c1.customer_name from sys_client c ,sys_company c1 where c.companyid = c1.id and c.id=parts.client_id) 
+                    end as custormName
+               from (select aus.*, o.order_no,o.order_time,o.report_no,o.car_number,o.car_frame_number,o.carModelNumberName,o.order_type,
+               o.take_car_time,o.client_id ,o.client_type,o.take_car_contact_number,o.take_car_contacts
+                      from car_scrap_order_autoparts aus ,
+                          (select o.car_model_number as carModelNumberName,o.*  from car_scrap_order o ) o where aus.order_id = o.id
+                   )parts left join car_scrap_order_audit  audit on parts.id = audit.order_id 
+                    left join 
+                   (select c.parts_category_name as partsCaregoryName,c.id as categoryid ,p.parts_name as partsTypeName , p.id as partstypeid from 
+                       tb_car_parts_category c,tb_car_parts p where c.id = p.parts_category_id
+                    ) c on c.partstypeid = parts.parts_type  order by audit.audit_time )t 
+
+               where 1=1
+               
+                    <if test="vo.userid != null" >
+                          and  t.auditor=#{vo.userid} 
+                           
+                        </if>
+                         <if test="vo.orderStatus != null" >
+                               and  t.orderStatus=#{vo.orderStatus}
+                         </if>
+                
+                    <if test="vo.keyWord != null" >
+		               and (t.order_no  like CONCAT('%',#{vo.keyWord},'%')  
+                            or t.report_no like CONCAT('%',#{vo.keyWord},'%') 
+		                    or t.car_number like CONCAT('%',#{vo.keyWord},'%') 
+		                    or t.car_frame_number like CONCAT('%',#{vo.keyWord},'%') 
+		                    or t.take_car_contacts like CONCAT('%',#{vo.keyWord},'%') 
+		                    or t.take_car_contact_number like CONCAT('%',#{vo.keyWord},'%') 
+		                    or t.carModelNumberName like CONCAT('%',#{vo.keyWord},'%'))
+		              </if>
+
+
+		            group by t.id order by t.operatortime desc
+		  
+		 
+	 </select>
+	
+	<select id="getOrderAutopartsDetailById" resultType="com.car.app.carscraporder.bo.CarScrapOrderAutopartsDetailBO" parameterType="java.lang.String"> 
+		select
+		
+		 case  o.client_type  when '1' then '个人'
+                 else (select  c1.customer_name from sys_client c ,sys_company c1 where c.companyid = c1.id and c.id=o.client_id) end as custormName,
+                 
+                 (select t.real_name from sys_user t where t.id=o.agent_userid ) saleName,
+		 p.* ,cp.partsCaregoryName,cp.parts_name as partsTypeName,cp.partsCaregoryId  ,o.report_no,o.car_number,o.take_car_contacts,o.order_no,
+		 o.payee_name,o.bank_account,o.opening_bank,
+		 o.take_car_contact_number,o.take_car_time,
+             o.take_car_address,o.car_frame_number,o.car_model_number as carModelNumberName,o.order_time
+        from car_scrap_order_autoparts p left join 
+
+          (select p.*,c.parts_category_name as partsCaregoryName,c.id as partsCaregoryId from tb_car_parts p ,
+		tb_car_parts_category c where p.parts_category_id = c.id) cp on p.parts_type = cp.id ,car_scrap_order o 
+        where o.id = p.order_id  and p.id= #{id,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="queryPendingOrder" resultType="java.lang.Integer" > 
+		select count(*) from car_scrap_order t ,car_scrap_order_autoparts p where t.id = p.order_id
+		 and t.order_type='2' and t.isremove='0'
+		
+		<if test="agentUserid != null" >
+		   and t.agent_userid=#{agentUserid,jdbcType=VARCHAR}
+		</if>
+		<if test="partsStauts != null" >
+		 and p.order_autoparts_status=#{partsStauts,jdbcType=VARCHAR}
+		</if>
+		
+		<if test="isSorting != null " >
+		     <choose>
+		         <when test="isSorting==true">
+		              and p.sorting_state is not null
+		         </when>
+		          <otherwise>
+		                and p.sorting_state is  null
+		          </otherwise>
+		         
+		     </choose>
+		     
+		</if>
+		
+		
+		    <if  test="areasids!=null and areasids.size()>0">
+		      and t.order_areas_id in 
+		     <foreach collection="areasids" index="index"  item="item"  open="(" separator=","  close=")">
+		              ${item}
+		     </foreach>
+		    </if>
+		
+		
+                
+	</select>
+	
+	<select id="selectPartCount" resultType="java.lang.Integer"   parameterType="com.car.app.carscraporder.vo.CarScrapOrderKeywordVO"> 
+	
+	      select count(*) from 
+			car_scrap_order t,
+			car_scrap_order_autoparts a where t.id=a.order_id  and t.isremove='0' and a.is_valid='1' and t.order_type='2'
+			   <if test="vo.userid != null and vo.userid != ''" >
+			         and t.agent_userid=#{vo.userid,jdbcType=VARCHAR}
+			   </if>
+			   <if test="vo.orderStatus != null and vo.orderStatus != ''" >
+			          and a.order_autoparts_status=#{vo.orderStatus,jdbcType=VARCHAR}
+			   </if>
+			
+			   <if  test="vo.araesidList!=null and vo.araesidList.size()>0">
+		               and t.order_areas_id in 
+		          <foreach collection="vo.araesidList" index="index"  item="item"  open="(" separator=","  close=")">
+		                   ${item}
+		           </foreach>
+		      </if>
+		      
+		       <if  test="vo.earlyWarningDate!=null">
+		          <![CDATA[ and  a.operatortime <=#{vo.earlyWarningDate} ]]>
+		       </if>
+			 
+			
+	
+	
+	</select>
+	
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+</mapper>

@@ -1,0 +1,816 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.car.app.carscraporder.mapper.TbCarInformationStoreMapper" >
+  <resultMap id="BaseResultMap" type="com.car.app.carscraporder.pojo.TbCarInformationStore" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="car_manufacturer" property="carManufacturer" jdbcType="VARCHAR" />
+    <result column="car_brand" property="carBrand" jdbcType="VARCHAR" />
+    <result column="car_system" property="carSystem" jdbcType="VARCHAR" />
+    <result column="car_model" property="carModel" jdbcType="VARCHAR" />
+    <result column="sales_name" property="salesName" jdbcType="VARCHAR" />
+    <result column="year" property="year" jdbcType="VARCHAR" />
+    <result column="emission_standard" property="emissionStandard" jdbcType="VARCHAR" />
+    <result column="car_type" property="carType" jdbcType="VARCHAR" />
+    <result column="listed_year" property="listedYear" jdbcType="VARCHAR" />
+    <result column="listed_month" property="listedMonth" jdbcType="VARCHAR" />
+    <result column="production_year" property="productionYear" jdbcType="VARCHAR" />
+    <result column="stop_year" property="stopYear" jdbcType="VARCHAR" />
+    <result column="countries" property="countries" jdbcType="VARCHAR" />
+    <result column="joint_stock" property="jointStock" jdbcType="VARCHAR" />
+    <result column="cylinder_volume" property="cylinderVolume" jdbcType="VARCHAR" />
+    <result column="displacement" property="displacement" jdbcType="VARCHAR" />
+    <result column="Intake_form" property="intakeForm" jdbcType="VARCHAR" />
+    <result column="fuel_type" property="fuelType" jdbcType="VARCHAR" />
+    <result column="maximum_power" property="maximumPower" jdbcType="VARCHAR" />
+    <result column="maximum_torque" property="maximumTorque" jdbcType="VARCHAR" />
+    <result column="cylinder_arrangement" property="cylinderArrangement" jdbcType="VARCHAR" />
+    <result column="cylinder_number" property="cylinderNumber" jdbcType="VARCHAR" />
+    <result column="compression_ratio" property="compressionRatio" jdbcType="VARCHAR" />
+    <result column="oil_supply_mode" property="oilSupplyMode" jdbcType="VARCHAR" />
+    <result column="transmission_description" property="transmissionDescription" jdbcType="VARCHAR" />
+    <result column="number_of_gears" property="numberOfGears" jdbcType="VARCHAR" />
+    <result column="front_brake_type" property="frontBrakeType" jdbcType="VARCHAR" />
+    <result column="rear_brake_type" property="rearBrakeType" jdbcType="VARCHAR" />
+    <result column="front_suspension_type" property="frontSuspensionType" jdbcType="VARCHAR" />
+    <result column="rear_suspension_type" property="rearSuspensionType" jdbcType="VARCHAR" />
+    <result column="driving_mode" property="drivingMode" jdbcType="VARCHAR" />
+    <result column="car_body_type" property="carBodyType" jdbcType="VARCHAR" />
+    <result column="car_doors_number" property="carDoorsNumber" jdbcType="VARCHAR" />
+    <result column="pedestal_number" property="pedestalNumber" jdbcType="VARCHAR" />
+    <result column="front_tire_specification" property="frontTireSpecification" jdbcType="VARCHAR" />
+    <result column="rear_tire_specification" property="rearTireSpecification" jdbcType="VARCHAR" />
+    <result column="front_wheel_type" property="frontWheelType" jdbcType="VARCHAR" />
+    <result column="rear_wheel_type" property="rearWheelType" jdbcType="VARCHAR" />
+    <result column="xenon_headlamp" property="xenonHeadlamp" jdbcType="VARCHAR" />
+    <result column="front_fog_lamp" property="frontFogLamp" jdbcType="VARCHAR" />
+    <result column="rear_wiper" property="rearWiper" jdbcType="VARCHAR" />
+    <result column="air_conditioner" property="airConditioner" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, car_manufacturer, car_brand, car_system, car_model, sales_name, year, emission_standard, 
+    car_type, listed_year, listed_month, production_year, stop_year, countries, joint_stock, 
+    cylinder_volume, displacement, Intake_form, fuel_type, maximum_power, maximum_torque, 
+    cylinder_arrangement, cylinder_number, compression_ratio, oil_supply_mode, transmission_description, 
+    number_of_gears, front_brake_type, rear_brake_type, front_suspension_type, rear_suspension_type, 
+    driving_mode, car_body_type, car_doors_number, pedestal_number, front_tire_specification, 
+    rear_tire_specification, front_wheel_type, rear_wheel_type, xenon_headlamp, front_fog_lamp, 
+    rear_wiper, air_conditioner
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.car.app.carscraporder.pojo.TbCarInformationStoreExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_car_information_store
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_car_information_store
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_car_information_store
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.car.app.carscraporder.pojo.TbCarInformationStoreExample" >
+    delete from tb_car_information_store
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.car.app.carscraporder.pojo.TbCarInformationStore" >
+    insert into tb_car_information_store (id, car_manufacturer, car_brand, 
+      car_system, car_model, sales_name, 
+      year, emission_standard, car_type, 
+      listed_year, listed_month, production_year, 
+      stop_year, countries, joint_stock, 
+      cylinder_volume, displacement, Intake_form, 
+      fuel_type, maximum_power, maximum_torque, 
+      cylinder_arrangement, cylinder_number, compression_ratio, 
+      oil_supply_mode, transmission_description, 
+      number_of_gears, front_brake_type, rear_brake_type, 
+      front_suspension_type, rear_suspension_type, 
+      driving_mode, car_body_type, car_doors_number, 
+      pedestal_number, front_tire_specification, 
+      rear_tire_specification, front_wheel_type, 
+      rear_wheel_type, xenon_headlamp, front_fog_lamp, 
+      rear_wiper, air_conditioner)
+    values (#{id,jdbcType=VARCHAR}, #{carManufacturer,jdbcType=VARCHAR}, #{carBrand,jdbcType=VARCHAR}, 
+      #{carSystem,jdbcType=VARCHAR}, #{carModel,jdbcType=VARCHAR}, #{salesName,jdbcType=VARCHAR}, 
+      #{year,jdbcType=VARCHAR}, #{emissionStandard,jdbcType=VARCHAR}, #{carType,jdbcType=VARCHAR}, 
+      #{listedYear,jdbcType=VARCHAR}, #{listedMonth,jdbcType=VARCHAR}, #{productionYear,jdbcType=VARCHAR}, 
+      #{stopYear,jdbcType=VARCHAR}, #{countries,jdbcType=VARCHAR}, #{jointStock,jdbcType=VARCHAR}, 
+      #{cylinderVolume,jdbcType=VARCHAR}, #{displacement,jdbcType=VARCHAR}, #{intakeForm,jdbcType=VARCHAR}, 
+      #{fuelType,jdbcType=VARCHAR}, #{maximumPower,jdbcType=VARCHAR}, #{maximumTorque,jdbcType=VARCHAR}, 
+      #{cylinderArrangement,jdbcType=VARCHAR}, #{cylinderNumber,jdbcType=VARCHAR}, #{compressionRatio,jdbcType=VARCHAR}, 
+      #{oilSupplyMode,jdbcType=VARCHAR}, #{transmissionDescription,jdbcType=VARCHAR}, 
+      #{numberOfGears,jdbcType=VARCHAR}, #{frontBrakeType,jdbcType=VARCHAR}, #{rearBrakeType,jdbcType=VARCHAR}, 
+      #{frontSuspensionType,jdbcType=VARCHAR}, #{rearSuspensionType,jdbcType=VARCHAR}, 
+      #{drivingMode,jdbcType=VARCHAR}, #{carBodyType,jdbcType=VARCHAR}, #{carDoorsNumber,jdbcType=VARCHAR}, 
+      #{pedestalNumber,jdbcType=VARCHAR}, #{frontTireSpecification,jdbcType=VARCHAR}, 
+      #{rearTireSpecification,jdbcType=VARCHAR}, #{frontWheelType,jdbcType=VARCHAR}, 
+      #{rearWheelType,jdbcType=VARCHAR}, #{xenonHeadlamp,jdbcType=VARCHAR}, #{frontFogLamp,jdbcType=VARCHAR}, 
+      #{rearWiper,jdbcType=VARCHAR}, #{airConditioner,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.car.app.carscraporder.pojo.TbCarInformationStore" >
+    insert into tb_car_information_store
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="carManufacturer != null" >
+        car_manufacturer,
+      </if>
+      <if test="carBrand != null" >
+        car_brand,
+      </if>
+      <if test="carSystem != null" >
+        car_system,
+      </if>
+      <if test="carModel != null" >
+        car_model,
+      </if>
+      <if test="salesName != null" >
+        sales_name,
+      </if>
+      <if test="year != null" >
+        year,
+      </if>
+      <if test="emissionStandard != null" >
+        emission_standard,
+      </if>
+      <if test="carType != null" >
+        car_type,
+      </if>
+      <if test="listedYear != null" >
+        listed_year,
+      </if>
+      <if test="listedMonth != null" >
+        listed_month,
+      </if>
+      <if test="productionYear != null" >
+        production_year,
+      </if>
+      <if test="stopYear != null" >
+        stop_year,
+      </if>
+      <if test="countries != null" >
+        countries,
+      </if>
+      <if test="jointStock != null" >
+        joint_stock,
+      </if>
+      <if test="cylinderVolume != null" >
+        cylinder_volume,
+      </if>
+      <if test="displacement != null" >
+        displacement,
+      </if>
+      <if test="intakeForm != null" >
+        Intake_form,
+      </if>
+      <if test="fuelType != null" >
+        fuel_type,
+      </if>
+      <if test="maximumPower != null" >
+        maximum_power,
+      </if>
+      <if test="maximumTorque != null" >
+        maximum_torque,
+      </if>
+      <if test="cylinderArrangement != null" >
+        cylinder_arrangement,
+      </if>
+      <if test="cylinderNumber != null" >
+        cylinder_number,
+      </if>
+      <if test="compressionRatio != null" >
+        compression_ratio,
+      </if>
+      <if test="oilSupplyMode != null" >
+        oil_supply_mode,
+      </if>
+      <if test="transmissionDescription != null" >
+        transmission_description,
+      </if>
+      <if test="numberOfGears != null" >
+        number_of_gears,
+      </if>
+      <if test="frontBrakeType != null" >
+        front_brake_type,
+      </if>
+      <if test="rearBrakeType != null" >
+        rear_brake_type,
+      </if>
+      <if test="frontSuspensionType != null" >
+        front_suspension_type,
+      </if>
+      <if test="rearSuspensionType != null" >
+        rear_suspension_type,
+      </if>
+      <if test="drivingMode != null" >
+        driving_mode,
+      </if>
+      <if test="carBodyType != null" >
+        car_body_type,
+      </if>
+      <if test="carDoorsNumber != null" >
+        car_doors_number,
+      </if>
+      <if test="pedestalNumber != null" >
+        pedestal_number,
+      </if>
+      <if test="frontTireSpecification != null" >
+        front_tire_specification,
+      </if>
+      <if test="rearTireSpecification != null" >
+        rear_tire_specification,
+      </if>
+      <if test="frontWheelType != null" >
+        front_wheel_type,
+      </if>
+      <if test="rearWheelType != null" >
+        rear_wheel_type,
+      </if>
+      <if test="xenonHeadlamp != null" >
+        xenon_headlamp,
+      </if>
+      <if test="frontFogLamp != null" >
+        front_fog_lamp,
+      </if>
+      <if test="rearWiper != null" >
+        rear_wiper,
+      </if>
+      <if test="airConditioner != null" >
+        air_conditioner,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="carManufacturer != null" >
+        #{carManufacturer,jdbcType=VARCHAR},
+      </if>
+      <if test="carBrand != null" >
+        #{carBrand,jdbcType=VARCHAR},
+      </if>
+      <if test="carSystem != null" >
+        #{carSystem,jdbcType=VARCHAR},
+      </if>
+      <if test="carModel != null" >
+        #{carModel,jdbcType=VARCHAR},
+      </if>
+      <if test="salesName != null" >
+        #{salesName,jdbcType=VARCHAR},
+      </if>
+      <if test="year != null" >
+        #{year,jdbcType=VARCHAR},
+      </if>
+      <if test="emissionStandard != null" >
+        #{emissionStandard,jdbcType=VARCHAR},
+      </if>
+      <if test="carType != null" >
+        #{carType,jdbcType=VARCHAR},
+      </if>
+      <if test="listedYear != null" >
+        #{listedYear,jdbcType=VARCHAR},
+      </if>
+      <if test="listedMonth != null" >
+        #{listedMonth,jdbcType=VARCHAR},
+      </if>
+      <if test="productionYear != null" >
+        #{productionYear,jdbcType=VARCHAR},
+      </if>
+      <if test="stopYear != null" >
+        #{stopYear,jdbcType=VARCHAR},
+      </if>
+      <if test="countries != null" >
+        #{countries,jdbcType=VARCHAR},
+      </if>
+      <if test="jointStock != null" >
+        #{jointStock,jdbcType=VARCHAR},
+      </if>
+      <if test="cylinderVolume != null" >
+        #{cylinderVolume,jdbcType=VARCHAR},
+      </if>
+      <if test="displacement != null" >
+        #{displacement,jdbcType=VARCHAR},
+      </if>
+      <if test="intakeForm != null" >
+        #{intakeForm,jdbcType=VARCHAR},
+      </if>
+      <if test="fuelType != null" >
+        #{fuelType,jdbcType=VARCHAR},
+      </if>
+      <if test="maximumPower != null" >
+        #{maximumPower,jdbcType=VARCHAR},
+      </if>
+      <if test="maximumTorque != null" >
+        #{maximumTorque,jdbcType=VARCHAR},
+      </if>
+      <if test="cylinderArrangement != null" >
+        #{cylinderArrangement,jdbcType=VARCHAR},
+      </if>
+      <if test="cylinderNumber != null" >
+        #{cylinderNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="compressionRatio != null" >
+        #{compressionRatio,jdbcType=VARCHAR},
+      </if>
+      <if test="oilSupplyMode != null" >
+        #{oilSupplyMode,jdbcType=VARCHAR},
+      </if>
+      <if test="transmissionDescription != null" >
+        #{transmissionDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="numberOfGears != null" >
+        #{numberOfGears,jdbcType=VARCHAR},
+      </if>
+      <if test="frontBrakeType != null" >
+        #{frontBrakeType,jdbcType=VARCHAR},
+      </if>
+      <if test="rearBrakeType != null" >
+        #{rearBrakeType,jdbcType=VARCHAR},
+      </if>
+      <if test="frontSuspensionType != null" >
+        #{frontSuspensionType,jdbcType=VARCHAR},
+      </if>
+      <if test="rearSuspensionType != null" >
+        #{rearSuspensionType,jdbcType=VARCHAR},
+      </if>
+      <if test="drivingMode != null" >
+        #{drivingMode,jdbcType=VARCHAR},
+      </if>
+      <if test="carBodyType != null" >
+        #{carBodyType,jdbcType=VARCHAR},
+      </if>
+      <if test="carDoorsNumber != null" >
+        #{carDoorsNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="pedestalNumber != null" >
+        #{pedestalNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="frontTireSpecification != null" >
+        #{frontTireSpecification,jdbcType=VARCHAR},
+      </if>
+      <if test="rearTireSpecification != null" >
+        #{rearTireSpecification,jdbcType=VARCHAR},
+      </if>
+      <if test="frontWheelType != null" >
+        #{frontWheelType,jdbcType=VARCHAR},
+      </if>
+      <if test="rearWheelType != null" >
+        #{rearWheelType,jdbcType=VARCHAR},
+      </if>
+      <if test="xenonHeadlamp != null" >
+        #{xenonHeadlamp,jdbcType=VARCHAR},
+      </if>
+      <if test="frontFogLamp != null" >
+        #{frontFogLamp,jdbcType=VARCHAR},
+      </if>
+      <if test="rearWiper != null" >
+        #{rearWiper,jdbcType=VARCHAR},
+      </if>
+      <if test="airConditioner != null" >
+        #{airConditioner,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.car.app.carscraporder.pojo.TbCarInformationStoreExample" resultType="java.lang.Integer" >
+    select count(*) from tb_car_information_store
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_car_information_store
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.carManufacturer != null" >
+        car_manufacturer = #{record.carManufacturer,jdbcType=VARCHAR},
+      </if>
+      <if test="record.carBrand != null" >
+        car_brand = #{record.carBrand,jdbcType=VARCHAR},
+      </if>
+      <if test="record.carSystem != null" >
+        car_system = #{record.carSystem,jdbcType=VARCHAR},
+      </if>
+      <if test="record.carModel != null" >
+        car_model = #{record.carModel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.salesName != null" >
+        sales_name = #{record.salesName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.year != null" >
+        year = #{record.year,jdbcType=VARCHAR},
+      </if>
+      <if test="record.emissionStandard != null" >
+        emission_standard = #{record.emissionStandard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.carType != null" >
+        car_type = #{record.carType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.listedYear != null" >
+        listed_year = #{record.listedYear,jdbcType=VARCHAR},
+      </if>
+      <if test="record.listedMonth != null" >
+        listed_month = #{record.listedMonth,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productionYear != null" >
+        production_year = #{record.productionYear,jdbcType=VARCHAR},
+      </if>
+      <if test="record.stopYear != null" >
+        stop_year = #{record.stopYear,jdbcType=VARCHAR},
+      </if>
+      <if test="record.countries != null" >
+        countries = #{record.countries,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jointStock != null" >
+        joint_stock = #{record.jointStock,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cylinderVolume != null" >
+        cylinder_volume = #{record.cylinderVolume,jdbcType=VARCHAR},
+      </if>
+      <if test="record.displacement != null" >
+        displacement = #{record.displacement,jdbcType=VARCHAR},
+      </if>
+      <if test="record.intakeForm != null" >
+        Intake_form = #{record.intakeForm,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fuelType != null" >
+        fuel_type = #{record.fuelType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.maximumPower != null" >
+        maximum_power = #{record.maximumPower,jdbcType=VARCHAR},
+      </if>
+      <if test="record.maximumTorque != null" >
+        maximum_torque = #{record.maximumTorque,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cylinderArrangement != null" >
+        cylinder_arrangement = #{record.cylinderArrangement,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cylinderNumber != null" >
+        cylinder_number = #{record.cylinderNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.compressionRatio != null" >
+        compression_ratio = #{record.compressionRatio,jdbcType=VARCHAR},
+      </if>
+      <if test="record.oilSupplyMode != null" >
+        oil_supply_mode = #{record.oilSupplyMode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.transmissionDescription != null" >
+        transmission_description = #{record.transmissionDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="record.numberOfGears != null" >
+        number_of_gears = #{record.numberOfGears,jdbcType=VARCHAR},
+      </if>
+      <if test="record.frontBrakeType != null" >
+        front_brake_type = #{record.frontBrakeType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rearBrakeType != null" >
+        rear_brake_type = #{record.rearBrakeType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.frontSuspensionType != null" >
+        front_suspension_type = #{record.frontSuspensionType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rearSuspensionType != null" >
+        rear_suspension_type = #{record.rearSuspensionType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.drivingMode != null" >
+        driving_mode = #{record.drivingMode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.carBodyType != null" >
+        car_body_type = #{record.carBodyType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.carDoorsNumber != null" >
+        car_doors_number = #{record.carDoorsNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pedestalNumber != null" >
+        pedestal_number = #{record.pedestalNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.frontTireSpecification != null" >
+        front_tire_specification = #{record.frontTireSpecification,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rearTireSpecification != null" >
+        rear_tire_specification = #{record.rearTireSpecification,jdbcType=VARCHAR},
+      </if>
+      <if test="record.frontWheelType != null" >
+        front_wheel_type = #{record.frontWheelType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rearWheelType != null" >
+        rear_wheel_type = #{record.rearWheelType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.xenonHeadlamp != null" >
+        xenon_headlamp = #{record.xenonHeadlamp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.frontFogLamp != null" >
+        front_fog_lamp = #{record.frontFogLamp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rearWiper != null" >
+        rear_wiper = #{record.rearWiper,jdbcType=VARCHAR},
+      </if>
+      <if test="record.airConditioner != null" >
+        air_conditioner = #{record.airConditioner,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_car_information_store
+    set id = #{record.id,jdbcType=VARCHAR},
+      car_manufacturer = #{record.carManufacturer,jdbcType=VARCHAR},
+      car_brand = #{record.carBrand,jdbcType=VARCHAR},
+      car_system = #{record.carSystem,jdbcType=VARCHAR},
+      car_model = #{record.carModel,jdbcType=VARCHAR},
+      sales_name = #{record.salesName,jdbcType=VARCHAR},
+      year = #{record.year,jdbcType=VARCHAR},
+      emission_standard = #{record.emissionStandard,jdbcType=VARCHAR},
+      car_type = #{record.carType,jdbcType=VARCHAR},
+      listed_year = #{record.listedYear,jdbcType=VARCHAR},
+      listed_month = #{record.listedMonth,jdbcType=VARCHAR},
+      production_year = #{record.productionYear,jdbcType=VARCHAR},
+      stop_year = #{record.stopYear,jdbcType=VARCHAR},
+      countries = #{record.countries,jdbcType=VARCHAR},
+      joint_stock = #{record.jointStock,jdbcType=VARCHAR},
+      cylinder_volume = #{record.cylinderVolume,jdbcType=VARCHAR},
+      displacement = #{record.displacement,jdbcType=VARCHAR},
+      Intake_form = #{record.intakeForm,jdbcType=VARCHAR},
+      fuel_type = #{record.fuelType,jdbcType=VARCHAR},
+      maximum_power = #{record.maximumPower,jdbcType=VARCHAR},
+      maximum_torque = #{record.maximumTorque,jdbcType=VARCHAR},
+      cylinder_arrangement = #{record.cylinderArrangement,jdbcType=VARCHAR},
+      cylinder_number = #{record.cylinderNumber,jdbcType=VARCHAR},
+      compression_ratio = #{record.compressionRatio,jdbcType=VARCHAR},
+      oil_supply_mode = #{record.oilSupplyMode,jdbcType=VARCHAR},
+      transmission_description = #{record.transmissionDescription,jdbcType=VARCHAR},
+      number_of_gears = #{record.numberOfGears,jdbcType=VARCHAR},
+      front_brake_type = #{record.frontBrakeType,jdbcType=VARCHAR},
+      rear_brake_type = #{record.rearBrakeType,jdbcType=VARCHAR},
+      front_suspension_type = #{record.frontSuspensionType,jdbcType=VARCHAR},
+      rear_suspension_type = #{record.rearSuspensionType,jdbcType=VARCHAR},
+      driving_mode = #{record.drivingMode,jdbcType=VARCHAR},
+      car_body_type = #{record.carBodyType,jdbcType=VARCHAR},
+      car_doors_number = #{record.carDoorsNumber,jdbcType=VARCHAR},
+      pedestal_number = #{record.pedestalNumber,jdbcType=VARCHAR},
+      front_tire_specification = #{record.frontTireSpecification,jdbcType=VARCHAR},
+      rear_tire_specification = #{record.rearTireSpecification,jdbcType=VARCHAR},
+      front_wheel_type = #{record.frontWheelType,jdbcType=VARCHAR},
+      rear_wheel_type = #{record.rearWheelType,jdbcType=VARCHAR},
+      xenon_headlamp = #{record.xenonHeadlamp,jdbcType=VARCHAR},
+      front_fog_lamp = #{record.frontFogLamp,jdbcType=VARCHAR},
+      rear_wiper = #{record.rearWiper,jdbcType=VARCHAR},
+      air_conditioner = #{record.airConditioner,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.car.app.carscraporder.pojo.TbCarInformationStore" >
+    update tb_car_information_store
+    <set >
+      <if test="carManufacturer != null" >
+        car_manufacturer = #{carManufacturer,jdbcType=VARCHAR},
+      </if>
+      <if test="carBrand != null" >
+        car_brand = #{carBrand,jdbcType=VARCHAR},
+      </if>
+      <if test="carSystem != null" >
+        car_system = #{carSystem,jdbcType=VARCHAR},
+      </if>
+      <if test="carModel != null" >
+        car_model = #{carModel,jdbcType=VARCHAR},
+      </if>
+      <if test="salesName != null" >
+        sales_name = #{salesName,jdbcType=VARCHAR},
+      </if>
+      <if test="year != null" >
+        year = #{year,jdbcType=VARCHAR},
+      </if>
+      <if test="emissionStandard != null" >
+        emission_standard = #{emissionStandard,jdbcType=VARCHAR},
+      </if>
+      <if test="carType != null" >
+        car_type = #{carType,jdbcType=VARCHAR},
+      </if>
+      <if test="listedYear != null" >
+        listed_year = #{listedYear,jdbcType=VARCHAR},
+      </if>
+      <if test="listedMonth != null" >
+        listed_month = #{listedMonth,jdbcType=VARCHAR},
+      </if>
+      <if test="productionYear != null" >
+        production_year = #{productionYear,jdbcType=VARCHAR},
+      </if>
+      <if test="stopYear != null" >
+        stop_year = #{stopYear,jdbcType=VARCHAR},
+      </if>
+      <if test="countries != null" >
+        countries = #{countries,jdbcType=VARCHAR},
+      </if>
+      <if test="jointStock != null" >
+        joint_stock = #{jointStock,jdbcType=VARCHAR},
+      </if>
+      <if test="cylinderVolume != null" >
+        cylinder_volume = #{cylinderVolume,jdbcType=VARCHAR},
+      </if>
+      <if test="displacement != null" >
+        displacement = #{displacement,jdbcType=VARCHAR},
+      </if>
+      <if test="intakeForm != null" >
+        Intake_form = #{intakeForm,jdbcType=VARCHAR},
+      </if>
+      <if test="fuelType != null" >
+        fuel_type = #{fuelType,jdbcType=VARCHAR},
+      </if>
+      <if test="maximumPower != null" >
+        maximum_power = #{maximumPower,jdbcType=VARCHAR},
+      </if>
+      <if test="maximumTorque != null" >
+        maximum_torque = #{maximumTorque,jdbcType=VARCHAR},
+      </if>
+      <if test="cylinderArrangement != null" >
+        cylinder_arrangement = #{cylinderArrangement,jdbcType=VARCHAR},
+      </if>
+      <if test="cylinderNumber != null" >
+        cylinder_number = #{cylinderNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="compressionRatio != null" >
+        compression_ratio = #{compressionRatio,jdbcType=VARCHAR},
+      </if>
+      <if test="oilSupplyMode != null" >
+        oil_supply_mode = #{oilSupplyMode,jdbcType=VARCHAR},
+      </if>
+      <if test="transmissionDescription != null" >
+        transmission_description = #{transmissionDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="numberOfGears != null" >
+        number_of_gears = #{numberOfGears,jdbcType=VARCHAR},
+      </if>
+      <if test="frontBrakeType != null" >
+        front_brake_type = #{frontBrakeType,jdbcType=VARCHAR},
+      </if>
+      <if test="rearBrakeType != null" >
+        rear_brake_type = #{rearBrakeType,jdbcType=VARCHAR},
+      </if>
+      <if test="frontSuspensionType != null" >
+        front_suspension_type = #{frontSuspensionType,jdbcType=VARCHAR},
+      </if>
+      <if test="rearSuspensionType != null" >
+        rear_suspension_type = #{rearSuspensionType,jdbcType=VARCHAR},
+      </if>
+      <if test="drivingMode != null" >
+        driving_mode = #{drivingMode,jdbcType=VARCHAR},
+      </if>
+      <if test="carBodyType != null" >
+        car_body_type = #{carBodyType,jdbcType=VARCHAR},
+      </if>
+      <if test="carDoorsNumber != null" >
+        car_doors_number = #{carDoorsNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="pedestalNumber != null" >
+        pedestal_number = #{pedestalNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="frontTireSpecification != null" >
+        front_tire_specification = #{frontTireSpecification,jdbcType=VARCHAR},
+      </if>
+      <if test="rearTireSpecification != null" >
+        rear_tire_specification = #{rearTireSpecification,jdbcType=VARCHAR},
+      </if>
+      <if test="frontWheelType != null" >
+        front_wheel_type = #{frontWheelType,jdbcType=VARCHAR},
+      </if>
+      <if test="rearWheelType != null" >
+        rear_wheel_type = #{rearWheelType,jdbcType=VARCHAR},
+      </if>
+      <if test="xenonHeadlamp != null" >
+        xenon_headlamp = #{xenonHeadlamp,jdbcType=VARCHAR},
+      </if>
+      <if test="frontFogLamp != null" >
+        front_fog_lamp = #{frontFogLamp,jdbcType=VARCHAR},
+      </if>
+      <if test="rearWiper != null" >
+        rear_wiper = #{rearWiper,jdbcType=VARCHAR},
+      </if>
+      <if test="airConditioner != null" >
+        air_conditioner = #{airConditioner,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.car.app.carscraporder.pojo.TbCarInformationStore" >
+    update tb_car_information_store
+    set car_manufacturer = #{carManufacturer,jdbcType=VARCHAR},
+      car_brand = #{carBrand,jdbcType=VARCHAR},
+      car_system = #{carSystem,jdbcType=VARCHAR},
+      car_model = #{carModel,jdbcType=VARCHAR},
+      sales_name = #{salesName,jdbcType=VARCHAR},
+      year = #{year,jdbcType=VARCHAR},
+      emission_standard = #{emissionStandard,jdbcType=VARCHAR},
+      car_type = #{carType,jdbcType=VARCHAR},
+      listed_year = #{listedYear,jdbcType=VARCHAR},
+      listed_month = #{listedMonth,jdbcType=VARCHAR},
+      production_year = #{productionYear,jdbcType=VARCHAR},
+      stop_year = #{stopYear,jdbcType=VARCHAR},
+      countries = #{countries,jdbcType=VARCHAR},
+      joint_stock = #{jointStock,jdbcType=VARCHAR},
+      cylinder_volume = #{cylinderVolume,jdbcType=VARCHAR},
+      displacement = #{displacement,jdbcType=VARCHAR},
+      Intake_form = #{intakeForm,jdbcType=VARCHAR},
+      fuel_type = #{fuelType,jdbcType=VARCHAR},
+      maximum_power = #{maximumPower,jdbcType=VARCHAR},
+      maximum_torque = #{maximumTorque,jdbcType=VARCHAR},
+      cylinder_arrangement = #{cylinderArrangement,jdbcType=VARCHAR},
+      cylinder_number = #{cylinderNumber,jdbcType=VARCHAR},
+      compression_ratio = #{compressionRatio,jdbcType=VARCHAR},
+      oil_supply_mode = #{oilSupplyMode,jdbcType=VARCHAR},
+      transmission_description = #{transmissionDescription,jdbcType=VARCHAR},
+      number_of_gears = #{numberOfGears,jdbcType=VARCHAR},
+      front_brake_type = #{frontBrakeType,jdbcType=VARCHAR},
+      rear_brake_type = #{rearBrakeType,jdbcType=VARCHAR},
+      front_suspension_type = #{frontSuspensionType,jdbcType=VARCHAR},
+      rear_suspension_type = #{rearSuspensionType,jdbcType=VARCHAR},
+      driving_mode = #{drivingMode,jdbcType=VARCHAR},
+      car_body_type = #{carBodyType,jdbcType=VARCHAR},
+      car_doors_number = #{carDoorsNumber,jdbcType=VARCHAR},
+      pedestal_number = #{pedestalNumber,jdbcType=VARCHAR},
+      front_tire_specification = #{frontTireSpecification,jdbcType=VARCHAR},
+      rear_tire_specification = #{rearTireSpecification,jdbcType=VARCHAR},
+      front_wheel_type = #{frontWheelType,jdbcType=VARCHAR},
+      rear_wheel_type = #{rearWheelType,jdbcType=VARCHAR},
+      xenon_headlamp = #{xenonHeadlamp,jdbcType=VARCHAR},
+      front_fog_lamp = #{frontFogLamp,jdbcType=VARCHAR},
+      rear_wiper = #{rearWiper,jdbcType=VARCHAR},
+      air_conditioner = #{airConditioner,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

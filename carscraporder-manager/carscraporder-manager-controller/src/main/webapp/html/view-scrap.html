@@ -1,0 +1,451 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" href="../lookpic/dist/zoomify.min.css" />
+    <script src="../js/jquery-3.1.1.min.js" type="text/javascript"></script>
+    <script src="../js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../js/modal.js" type="text/javascript"></script>
+    <script src="../lookpic/dist/zoomify.min.js"></script>
+    <title>车报废管理后台</title>
+    <style>
+        thumbnail img {
+            width: 133px;
+            height: 77px;
+        }
+    </style>
+</head>
+<body>
+    <div class="back-stage-top">
+        <h1 class="pull-left">车报废管理后台</h1>
+        <h1 class="pull-right text-primary" id="loginout" style="margin-left:20px;cursor:pointer;font-size:18px;margin-right:50px;" onclick="loginout()">退出</h1>
+        <h1 class="pull-right text-primary" id="loginusername" style="margin-left:20px;font-size:18px;">用户名：张三</h1>
+    </div>
+    <div class="backnav">
+        <ul class="backnav">
+            <li><a href="index.html">首页</a></li>
+            <li><a href="orderlist.html">订单管理</a></li>
+            <li class="cur"><a href="scraplist.html">报废汽车</a></li>
+            <li><a href="jiulist.html">旧件回收</a></li>
+            <li><a href="moneymanage.html">财务管理</a></li>
+            <li><a href="system.html">系统设置</a></li>
+        </ul>
+    </div>
+    <div class="tablebox">
+        <ol class="breadcrumb m-t-10">
+            <li><a href="index.html">首页</a></li>
+            <li><a href="orderlist.html">汽车报废</a></li>
+            <li>查看</li>
+        </ol>
+        <h2 class="text-center" id="orderNo"></h2>
+        <div class="col-md-10">
+            <table class="table table-bordered">
+                <tr>
+                    <th width="10%" class="text-right">业务员：</th>
+                    <td width="10%"><span id="saleName"></span></td>
+                    <th width="10%" class="text-right">委托单位：</th>
+                    <td><span id="custormName"></span></td>
+                </tr>
+                <tr>
+                    <th width="120" class="text-right">派单备注：</th>
+                    <td colspan="3"><span id="piesNote"></span></td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-md-2">
+            <h2><span class="label label-primary" id="orderStatus"></span></h2>
+        </div>
+        <!--车辆信息-->
+        <div class="col-md-6">
+            <h4 class="page-header"><span class="glyphicon glyphicon-list-alt m-l-15"></span> 车辆信息</h4>
+            <table class="tablelist">
+                <tr>
+                    <th width="120" class="text-right">车牌号：</th>
+                    <td><span id="custormName"></span></td>
+                </tr>
+                <tr>
+                    <th width="120" class="text-right">车架号：</th>
+                    <td><span id="carFrameNumber"></span></td>
+                </tr>
+                <tr>
+                    <th width="120" class="text-right">车辆型号：</th>
+                    <td><span id="carModelNumber"></span></td>
+                </tr>
+                <tr>
+                    <th width="120" class="text-right">能否行驶：</th>
+                    <td><span id="isdrive"></span></td>
+                </tr>
+                <tr>
+                    <th width="120" class="text-right">车辆归属：</th>
+                    <td><span id="carAscription"></span></td>
+                </tr>
+                <tr>
+                    <th width="120" class="text-right">车主姓名：</th>
+                    <td><span id="carOwner"></span></td>
+                </tr>
+                <tr>
+                    <th width="120" class="text-right">报废证明日期：</th>
+                    <td><span id="carScrapDate"></span></td>
+                </tr>
+            </table>
+        </div>
+        <!--end 车辆信息-->
+        <!--取车信息-->
+        <div class="col-md-6">
+            <h4 class="page-header"><span class="glyphicon glyphicon-list-alt m-l-15"></span> 取车信息</h4>
+            <table class="tablelist">
+                <tr>
+                    <th width="120" class="text-right">取车联系人：</th>
+                    <td><span id="takeCarContacts"></span></td>
+                </tr>
+                <tr>
+                    <th width="120" class="text-right">联系人电话：</th>
+                    <td><span id="takeCarContactNumber"></span></td>
+                </tr>
+                <tr>
+                    <th width="120" class="text-right">取车时间：</th>
+                    <td><span id="takeCarTime"></span></td>
+                </tr>
+                <tr>
+                    <th width="120" class="text-right">取车地址：</th>
+                    <td><span id="takeCarAddress"></span></td>
+                </tr>
+            </table>
+        </div>
+        <!--end 取车信息-->
+        <div class="clearfix"></div>
+        <!--残值发放信息-->
+        <div class="col-md-4">
+            <h4 class="page-header"><span class="glyphicon glyphicon-list-alt m-l-15"></span> 残值发放信息</h4>
+            <table class="tablelist">
+                <tr>
+                    <th width="120" class="text-right">收款人姓名：</th>
+                    <td><span id="payeeName"></span></td>
+                </tr>
+                <tr>
+                    <th width="120" class="text-right">银行账户：</th>
+                    <td><span id="bankAccount"></span></td>
+                </tr>
+                <tr>
+                    <th width="120" class="text-right">开户行：</th>
+                    <td><span id="openingBank"></span></td>
+                </tr>
+                <tr>
+                    <th width="120" class="text-right">残值金额：</th>
+                    <td><span id="orderAmount"></span> <span class="label label-success" id="amountstate"></span></td>
+                </tr>
+            </table>
+        </div>
+        <!--end 残值发放信息-->
+        <!--手续邮寄信息-->
+        <div class="col-md-4">
+            <h4 class="page-header"><span class="glyphicon glyphicon-list-alt m-l-15"></span> 手续邮寄信息</h4>
+            <table class="tablelist">
+                <tr>
+                    <th width="120" class="text-right">收件人姓名：</th>
+                    <td><span id="mailingAddressName"></span></td>
+                </tr>
+                <tr>
+                    <th width="120" class="text-right">收件人电话：</th>
+                    <td><span id="mailingAddressTelephone"></span></td>
+                </tr>
+
+                <tr>
+                    <th width="120" class="text-right">邮寄地址：</th>
+                    <td><span id="detailedAddress"></span></td>
+                </tr>
+                <tr>
+                    <th width="120" class="text-right">快递单号：</th>
+                    <td><span class="label label-primary" id="expressCompany">顺丰速递</span><span id="expressNumber"></span></td>
+                </tr>
+            </table>
+        </div>
+        <!--end 手续邮寄信息-->
+        <div class="col-md-4">
+            <h4 class="page-header"><span class="glyphicon glyphicon-list-alt m-l-15"></span> 其它</h4>
+            <table class="tablelist">
+                <tr>
+                    <th width="100" class="text-right">下单日期：</th>
+                    <td><span id="createOrderDate"></span></td>
+                </tr>
+                <tr>
+                    <th width="100" class="text-right">入场日期：</th>
+                    <td><span id="inStorageDate"></span></td>
+                </tr>
+                <tr>
+                    <th width="100" class="text-right">手续领取日期：</th>
+                    <td><span id="formalitiesDate"></span></td>
+                </tr>
+                <tr>
+                    <th width="100" class="text-right">残值发放日期：</th>
+                    <td><span id="settlementDate"></span></td>
+                </tr>
+            </table>
+        </div>
+        <div class="clearfix"></div>
+        <!--车辆照片-->
+        <div class="col-md-12">
+            <h4 class="page-header"><span class="glyphicon glyphicon-list-alt m-l-15"></span> 车辆照片</h4>
+            <div class="row" id="carphotos">
+            </div>
+        </div>
+        <!--end 车辆照片-->
+        <div class="col-md-6">
+            <h4 class="page-header"><span class="glyphicon glyphicon-list-alt m-l-15"></span> 手续照片</h4>
+            <div class="row" id="producesphotos">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h4 class="page-header"><span class="glyphicon glyphicon-list-alt m-l-15"></span> 车辆毁型照片</h4>
+            <div class="row" id="destructphotos">
+            </div>
+        </div>
+        <div class="col-md-12">
+            <h4 class="page-header"><span class="glyphicon glyphicon-list-alt m-l-15"></span> 报废证明照片</h4>
+            <div class="row" id="rejectphotos">
+            </div>
+        </div>
+        <div class="clearfix page-header p-tb30"></div>
+        <div class="text-center m-b-20">
+            <button class="btn btn-primary btn-lg m-r-10 goback">返回</button>
+        </div>
+    </div>
+    <script src="../js/comm.js"></script>
+    <script>
+        clearnull();
+        (function ($) {
+            $.getUrlParam = function (name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if (r != null) return unescape(r[2]);
+                return null;
+            }
+        })(jQuery);
+
+        var id = $.getUrlParam('id');
+        LoadPageDetail(id);
+
+        //加载详情
+        function LoadPageDetail(id) {
+            $.ajax({
+                type: "get",
+                url: href + 'order/' + id,
+                async: false,
+                dataType: "json",
+                success: function (obj) {
+                    if (obj.msg == "success") {
+                        var info = obj.data;
+                        $("#saleName").html(info.saleName);
+                        $("#orderNo").html("订单信息：" + info.orderNo);
+                        $("#custormName").html(info.custormName);
+                        $("#piesNote").html(info.piesNote);
+                        $("#orderStatus").html(GetOrderState(info.orderStatus));
+                        $("#custormName").html(info.custormName);
+                        $("#carFrameNumber").html(info.carFrameNumber);
+                        $("#carModelNumber").html(info.carModelNumber);
+                        $("#isdrive").html(info.isdrive == "1" ? "可以行驶" : (info.isdrive == "2" ? "不可以行驶" : "严重事故"));
+                        $("#carAscription").html(info.carAscription == "1" ? "个人" : "公户");
+                        $("#carOwner").html(info.carOwner);
+                        $("#carScrapDate").html(info.carScrapDate);
+                        $("#takeCarContacts").html(info.takeCarContacts);
+                        $("#takeCarContactNumber").html(info.takeCarContactNumber);
+                        $("#takeCarTime").html(info.takeCarTime);
+                        $("#takeCarAddress").html(info.takeCarAddress);
+                        $("#payeeName").html(info.payeeName);
+                        $("#bankAccount").html(info.bankAccount);
+                        $("#openingBank").html(info.openingBank);
+                        $("#orderAmount").html(info.orderAmount);
+                        $("#amountstate").html(GetAmountState(info.orderStatus));
+                        $("#mailingAddressName").html(info.mailingAddressName);
+                        $("#mailingAddressTelephone").html(info.mailingAddressTelephone);
+                        //$("#detailedAddress").html(info.province + " " + info.city + " " + info.county + " " + info.detailedAddress);
+                        $("#detailedAddress").html(LoadProvince(info.province) + LoadCity(info.city) + LoadArea(info.county) + info.detailedAddress);
+                        $("#expressCompany").html(info.expressCompany);
+                        $("#expressNumber").html(info.expressNumber);
+                        $("#createOrderDate").html(info.createOrderDate);
+                        $("#inStorageDate").html(info.inStorageDate);
+                        $("#formalitiesDate").html(info.formalitiesDate);
+                        $("#settlementDate").html(info.settlementDate);
+
+                        //加载车辆照片
+                        var pics = info.vehiclePictures;
+                        var picinfo = "";
+                        for (i = 0; i < pics.length; i++) {
+                            if (pics[i].carPictureType) {
+                                picinfo += '<div class="col-xs-2 col-md-2 m-b-20">';
+                                picinfo += '<div class="thumbnail">';
+                                picinfo += '<img style="width:133px;height:110px;" src="' + pics[i].url + '" alt="" />';
+                                picinfo += '</div>';
+                                picinfo += '<p class="text-center">' + GetPicCategory(pics[i].carPictureType) + '</p>';
+                                picinfo += '</div>';
+                            }
+                        }
+                        $("#carphotos").html(picinfo);
+
+                        //加载手续照片
+                        pics = info.formalitiesPictures;
+                        pic1info = "";
+                        for (i = 0; i < pics.length; i++) {
+                            if (pics[i].carPictureType) {
+                                pic1info += '<div class="col-xs-4 col-md-4 m-b-20">';
+                                pic1info += '<div class="thumbnail">';
+                                pic1info += '<img style="width:133px;height:110px;" src="' + pics[i].url + '" alt="" />';
+                                pic1info += '</div>';
+                                pic1info += '<p class="text-center">' + GetPicCategory(pics[i].carPictureType) + '</p>';
+                                pic1info += '</div>';
+                            }
+                        }
+                        $("#producesphotos").html(pic1info);
+
+                        //加载车辆毁型照片
+                        pics = info.destroyPictures;
+                        pic1info = "";
+                        for (i = 0; i < pics.length; i++) {
+                            pic1info += '<div class="col-xs-4 col-md-4 m-b-20">';
+                            pic1info += '<div class="thumbnail">';
+                            pic1info += '<img style="width:133px;height:110px;" src="' + pics[i].url + '" alt="" />';
+                            pic1info += '</div>';
+                            pic1info += '</div>';
+                        }
+                        $("#destructphotos").html(pic1info);
+
+                        //加载报废证明照片
+                        pics = info.certificatePictures;
+                        pic1info = "";
+                        for (i = 0; i < pics.length; i++) {
+                            pic1info += '<div class="col-xs-2 col-md-2 m-b-20">';
+                            pic1info += '<div class="thumbnail">';
+                            pic1info += '<img style="width:133px;height:110px;" src="' + pics[i].url + '" alt="" />';
+                            pic1info += '</div>';
+                            pic1info += '</div>';
+                        }
+                        $("#rejectphotos").html(pic1info);
+                        $(".thumbnail img").zoomify();
+                    }
+                }
+            })
+        }
+
+        //加载图片所属类型
+        function GetPicCategory(a) {
+            var result = "";
+            switch (a) {
+                case "1": result = "左前45度"; break;
+                case "2": result = "正前"; break;
+                case "3": result = "右前45度 "; break;
+                case "4": result = "左后45度"; break;
+                case "5": result = "正后"; break;
+                case "6": result = "右后45度"; break;
+                case "7": result = "车架号"; break;
+                case "8": result = "发动机"; break;
+                case "9": result = "仪表"; break;
+                case "10": result = "行驶证"; break;
+                case "11": result = "登记台"; break;
+                case "12": result = "车主身份正正前方"; break;
+                case "13": result = "车主身份正正后"; break;
+                default: result = "";
+            }
+            return result;
+        }
+
+        //根据订单状态返回残值金额状态
+        function GetAmountState(a) {
+            var result = "";
+            if (a == "1" || a == "2" || a == "3" || a == "4" || a == "5") {
+                result = "未支付";
+            }
+            else if (a == "6") {
+                result = "部分支付";
+            }
+            else if (a == "6") {
+                result = "已支付";
+            }
+            else {
+                result = "订单异常";
+            }
+            return result;
+        }
+
+        //列表加载订单状态枚举值
+        //状态 1:未接单 2：已接单 3:已接收 4：已入场 5：已出库 6：已结算 7结算 8：订单异常
+        function GetOrderState(a) {
+            var result = "";
+            a = a.toString();
+            switch (a) {
+                case "1": result = "未接单"; break;
+                case "2": result = "已接单"; break;
+                case "3": result = "已接收"; break;
+                case "4": result = "已入场"; break;
+                case "5": result = "已出库"; break;
+                case "6": result = "已结算"; break;
+                case "7": result = "结算"; break;
+                default: result = "订单异常";
+            }
+            return result;
+        }
+
+        //加载省份
+        function LoadProvince(a) {
+            var result = "";
+            if (a) {
+                $.ajax({
+                    type: "get",
+                    url: href +"provinces/"+a,
+                    async: false,
+                    dataType: "json",
+                    success: function (obj) {
+                        if (obj.msg == "success") {
+                            result += obj.data.province;
+                        }
+                    }
+                });
+            }
+            return result;
+        }
+        //加载城市
+        function LoadCity(b) {
+            var result = "";
+            if (b) {
+                $.ajax({
+                    type: "get",
+                    url: href + "cityes/" + b,
+                    dataType: "json",
+                    async: false,
+                    success: function (obj) {
+                        if (obj.msg == "success") {
+                            result += obj.data.city;
+                        }
+                    }
+                });
+            }
+            return result;
+        }
+        //加载区域
+        function LoadArea(c) {
+            var result = "";
+            if (c) {
+                $.ajax({
+                    type: "get",
+                    url: href + "areas/" + c,
+                    dataType: "json",
+                    async: false,
+                    success: function (obj) {
+                        if (obj.msg == "success") {
+                            result += obj.data.area;
+                        }
+                    }
+                });
+            }
+            return result;
+        }
+
+        //返回
+        $(".goback").on("click", function (event) {
+            event.preventDefault();
+            window.history.go(-1)
+        });
+    </script>
+</body>
+</html>

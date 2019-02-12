@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+        http://www.springframework.org/schema/aop 
+        http://www.springframework.org/schema/aop/spring-aop-2.5.xsd 
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- 注解驱动 -->
+	<mvc:annotation-driven  conversion-service="conversionService">
+	    <mvc:message-converters>
+			<!-- 定义文本转化器 -->
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<constructor-arg index="0" value="UTF-8"/>
+			</bean>
+			
+			<!-- 扩展了MappingJackson2HttpMessageConverter支持了jsonp的跨域请求 -->
+			<bean class="com.car.app.common.spring.exetend.converter.CallbackMappingJackson2HttpMessageConverter">
+				<!-- 请求参数中的回调参数的方法名 -->
+				<property name="callbackName" value="callback"/>
+			</bean>
+			
+			
+			
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+	
+	
+	 <mvc:default-servlet-handler/>
+	
+	
+	 <bean id="conversionService"    class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+                <property name="converters">
+                  <set>
+                         <!-- 指定自定义转换器的全路径名称 -->
+                        <bean class="com.car.app.common.spring.exetend.converter.DateConverter" />
+                 </set>
+              </property>
+     </bean>
+	
+	
+		
+		
+		<!-- 校验器 -->
+	<bean id="validator"
+		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+		<!-- hibernate校验器-->
+		<property name="providerClass" value="org.hibernate.validator.HibernateValidator" />
+		<!-- 指定校验使用的资源文件，在文件中配置校验错误信息，如果不指定则默认使用classpath下的ValidationMessages.properties -->
+		<property name="validationMessageSource" ref="messageSource" />
+	</bean>
+<!-- 校验错误信息配置文件 -->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<!-- 资源文件名-->
+		<property name="basenames">   
+       	 <list>    
+            <value>classpath:validationMessages</value> 
+       	 </list>   
+    	</property>
+		<!-- 资源文件编码格式 -->
+		<property name="fileEncodings" value="utf-8" />
+		<!-- 对资源文件内容缓存时间，单位秒 -->
+		<property name="cacheSeconds" value="120" />
+	</bean>
+	
+	
+		
+	
+	
+	
+	
+	<!-- 指定扫描包 -->
+	<context:component-scan base-package="com.car.app.carscraporder.controller"/>
+	
+	<bean id="controllerAop" class="com.car.app.carscraporder.controller.aop.ControllerAOP" />
+	 
+  <aop:config>       
+   <!-- AOP目标通配符配置    com.car.app.controller下所用的类的所有public方法都做拦截 -->    
+                                                                                                         
+       <aop:pointcut id="target" expression="execution(public com.car.app.common.bean.ResultBean com.car.app.carscraporder.controller.*.*(..))" />
+  
+    <aop:aspect  ref="controllerAop" order="0">
+     
+      <!--  aop:around 环绕通知 -->             
+      <aop:around method="handlerControllerMethod" pointcut-ref="target" />
+    </aop:aspect>
+  
+  </aop:config>
+  
+  <bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<!-- Example: a logical view name of 'showMessage' is mapped to '/WEB-INF/jsp/showMessage.jsp' -->
+		<property name="prefix" value="/WEB-INF/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+     
+  <mvc:interceptors>
+		<mvc:interceptor>
+		
+			<mvc:mapping path="/**"/>
+			<bean class="com.car.app.carscraporder.interceptor.UserHandlerInterceptor"></bean>
+			
+		</mvc:interceptor>
+  
+  </mvc:interceptors>
+	
+</beans>

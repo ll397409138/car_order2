@@ -1,0 +1,304 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css" />
+    <link rel="stylesheet" href="../layui/css/layui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/pagination.css" />
+    <script src="../js/jquery-3.1.1.min.js" type="text/javascript"></script>
+    <script src="../js/bootstrap.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../js/jquery.bootstrap.min.js"></script>
+    <script src="../js/dropdown.js" type="text/javascript"></script>
+    <script src="../js/modal.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../layui/layui.js"></script>
+    <script type="text/javascript" src="../js/pagination.js"></script>
+    <script src="../js/template-web.js"></script>
+    <script type="text/javascript">
+        $('.dropdown-toggle').dropdown()
+    </script>
+    <style>
+        #listinfo td, th {
+            text-align: center;
+            vertical-align: middle;
+        }
+    </style>
+    <title>车报废管理后台-整车报废</title>
+</head>
+<body>
+    <div class="back-stage-top">
+        <h1 class="pull-left">车报废管理后台</h1>
+        <h1 class="pull-right text-primary" id="loginout" style="margin-left:20px;cursor:pointer;font-size:18px;margin-right:50px;" onclick="loginout()">退出</h1>
+        <h1 class="pull-right text-primary" id="loginusername" style="margin-left:20px;font-size:18px;">用户名：张三</h1>
+    </div>
+    <div class="backnav">
+        <ul class="backnav">
+            <li><a href="index.html">首页</a></li>
+            <li><a href="orderlist.html">订单管理</a></li>
+            <li class="cur"><a href="scraplist.html">报废汽车</a></li>
+            <li><a href="jiulist.html">旧件回收</a></li>
+            <li><a href="moneymanage.html">财务管理</a></li>
+            <li><a href="system.html">系统设置</a></li>
+        </ul>
+    </div>
+    <div class="tablebox">
+        <div class="">
+            <ol class="breadcrumb">
+                <li><a href="index.html">首页</a></li>
+                <li>报废汽车</li>
+            </ol>
+            <div class="searchbox">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="searchval" placeholder="订单编号/车牌号/车架号/描述/联系人/联系电话" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" id="searbtn">查询</button>
+                        </span>
+                    </div>
+                </div>
+                <!--<div class="pull-right">
+                    <select class="img-input">
+                        <option>全部订单类型</option>
+                        <option>整车报废订单</option>
+                        <option>旧件回收订单</option>
+                    </select>
+                </div>-->
+                <div class="clearfix"></div>
+            </div>
+            <ul class="nav nav-tabs">
+                <li role="presentation" class="active"><a href="#" data-type="" data-url="autoparts" class="changeye">全部</a></li>
+                <li role="presentation"><a href="#" data-type="1" data-url="autoparts" class="changeye">未接单</a></li>
+                <li role="presentation"><a href="#" data-type="2" data-url="autoparts" class="changeye">等待取车</a></li>
+                <li role="presentation"><a href="#" data-type="3,4" data-url="autoparts" class="changeye">等待报废</a></li>
+                <li role="presentation"><a href="#" data-type="5,6" data-url="autoparts" class="changeye">等待发放残值</a></li>
+                <li role="presentation"><a href="#" data-type="7" data-url="autoparts" class="changeye">已完成</a></li>
+                <li role="presentation"><a href="#" data-type="8" data-url="autoparts" class="changeye">无法接收车辆</a></li>
+            </ul>
+            <table class="table table-striped tdmain" id="listinfo">
+                <thead>
+                    <tr>
+                        <th width="100">车牌号</th>
+                        <th width="180">车架号</th>
+                        <th width="180">车型</th>
+                        <th width="80">车主姓名</th>
+                        <th width="100">残值价格</th>
+                        <th width="180">委托方</th>
+                        <th width="150">订单编号</th>
+                        <th width="200">订单时间</th>
+                        <!--<th width="120">报案号</th>-->
+                        <th width="80">状态</th>
+                        <th width="100">操作</th>
+                        <th width="100">快递单号</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <script id="listorder" type="text/html">
+                {{each rows value i}}
+                <tr>
+                    <td title="{{value.carNumber}}"><a style="color:blue;" href='view-scrap.html?id={{value.id}}'>{{value.carNumber}}</a></td>
+                    <td title="{{value.carFrameNumber}}">{{value.carFrameNumber.length>12?value.carFrameNumber.substring(0,12)+"...":value.carFrameNumber}}</td>
+                    <td title="{{value.carModelNumberName}}">{{value.carModelNumberName.length>12?value.carModelNumberName.substring(0,12)+"...":value.carModelNumberName}}</td>
+                    <td title="{{value.carOwner}}">{{value.carOwner}}</td>
+                    <td title="{{value.amount==null?"0":value.amount}}">{{value.amount==null?"0":value.amount}}</td>
+                    <td title="{{value.custormName}}">{{value.custormName.length>8?value.custormName.substring(0,8)+"...":value.custormName}}</td>
+                    <td title="{{value.orderNo}}">{{value.orderNo}}</td>
+                    <td title="{{value.orderTime}}">{{value.orderTime}}</td>
+                    <!--<td title="{{value.reportNo}}">{{value.reportNo}}</td>-->
+                    <td title="{{value.orderStatus}}">{{value.orderStatus}}</td>
+                    <td><button type="button" class="btn btn-default btn-sm updatebtn" data-id={{value.id}} data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>编辑</button></td>
+                    <td><button class="btn btn-default quan" type="button" data-id={{ value.id }} data-toggle="modal" data-target="#updatekuaidi">快递单号</button></td>
+                    <!--<td><% if(value.expressNumber) {%> <span>{{value.expressNumber}}</span><%}else{%><button class="btn btn-default quan" type="button" data-id={{ value.id }} data-toggle="modal" data-target="#updatekuaidi">快递单号</button><%}%></td>-->
+                </tr>
+                {{/each}}
+            </script>
+            <div id="wrapper">
+
+            </div>
+        </div>
+    </div>
+    <!-- 填写快递单号 -->
+    <div class="hide">
+        <div id="detailState">
+            <table class="tablelist addkuaidi">
+                <tbody>
+                    <tr><td>快递公司：</td><td><input class="form-control" placeholder="快递公司" required="" autofocus="" type="text" id="kdgongsi" /></td></tr>
+                    <tr><td>快递单号：</td><td><input class="form-control" placeholder="快递单号" required="" type="text" id="kddanhao" /></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="../js/jquery.page.js"></script>
+    <script src="../js/comm.js"></script>
+    <script>
+        layui.use('layer', function () {
+
+        });
+        var typedata = "";
+
+        paginationFunc(1, "", "");
+
+        $("#searbtn").on("click", function (event) {
+            event.preventDefault();
+            var val = $("#searchval").val();
+            paginationFunc(1, typedata, val);
+        });
+
+        //点击切换数据
+        $(".changeye").on("click", function (event) {
+            event.preventDefault();
+            $(this).parent().siblings().removeClass("active");
+            $(this).parent().addClass("active");
+            var y = $(this).attr("data-type");
+            var val = $("#searchval").val();
+            paginationFunc(1, y, val);
+        });
+
+        //分页公共方法
+        function paginationFunc(x, y, z) {
+            typedata = y;
+            var arr = [];
+            $.ajax({
+                type: "get",
+                url: href + "order",
+                data: {
+                    page: x,
+                    rows: 10,
+                    orderStatus: y,
+                    orderType: 1,
+                    keyWord: z
+                },
+                dataType: "json",
+                success: function (obj) {
+                    if (obj.msg == "success") {
+                        var count = obj.data.total;
+                        for (var i = 0; i < count; i++) {
+                            arr.push(i)
+                        }
+                        $('#wrapper').pagination({
+                            dataSource: arr,
+                            pageNumber: x,
+                            pageSize: 10,
+                            callback: function (data, pagination) { //回调函数 当我们点击页数执行的方法
+                                LoadList(pagination.pageNumber, y, z);
+                            }
+                        })
+                    }
+                }
+            });
+        }
+
+        function LoadList(x, y, z) {
+            typedata = y;
+            $.ajax({
+                type: "get",
+                url: href + "order",
+                data: {
+                    page: x,
+                    rows: 10,
+                    orderStatus: y,
+                    orderType: 1,
+                    keyWord: z
+                },
+                dataType: "json",
+                success: function (obj) {
+                    if (obj.msg == "success") {
+                        var count = obj.data.rows.length;
+                        var showlist = [];
+                        if (count == 0) {
+                            showlist.push('<tr><td colspan=' + $("#listinfo th").length + ' style="text-align:center">无数据</td></tr>');
+                            $("#listinfo tbody").html(showlist.join(''));
+                        }
+                        else {
+                            for (var t = 0; t < obj.data.rows.length; t++) {
+                                obj.data.rows[t].orderStatus = GetOrderState(obj.data.rows[t].orderStatus);
+                            }
+                            var html = template('listorder', obj.data);
+                            $("#listinfo tbody").html(html);
+                        }
+                    }
+                },
+                error: function (ex) {
+                    console.log(ex);
+                }
+            });
+        }
+
+        //查看
+        $(document).delegate('.selectdetail', 'click', function (event) {
+            event.preventDefault();
+            var id = $(this).attr("data-id");
+            window.location.href = "view-scrap.html?id=" + id
+        })
+
+        //修改
+        $(document).delegate('.updatebtn', 'click', function (event) {
+            event.preventDefault();
+            var id = $(this).attr("data-id");
+            window.location.href = "edit-scrap.html?id=" + id
+        })
+
+        //列表加载订单状态枚举值
+        //状态 1:未接单 2：已接单 3:已接收 4：已入场 5：已出库 6：已结算 7结算 8：订单异常
+        function GetOrderState(a) {
+            var result = "";
+            a = a.toString();
+            switch (a) {
+                case "1": result = "未接单"; break;
+                case "2": result = "接单派单"; break;
+                case "3": result = "接收"; break;
+                case "4": result = "入场"; break;
+                case "5": result = "报废"; break;
+                case "6": result = "结算"; break;
+                case "7": result = "结束"; break;
+                default: result = "订单异常";
+            }
+            return result;
+        }
+
+        //常用联系人
+        $(document).delegate('.quan', 'click', function (event) {
+            event.preventDefault();
+            var did = $(this).attr("data-id");
+            $('#detailState').dialog({
+                title: '录入快递信息',
+                onClose: function () {
+                    $(this).dialog('close');
+                },
+                buttons: [{
+                    text: '取消',
+                    'click': function () {
+                        $(this).dialog('close');
+                    }
+                }, {
+                    text: '保存',
+                    'class': 'btn-primary',
+                        'click': function () {
+                            $.ajax({
+                                type: "put",
+                                url: "http://60.205.223.142/carscraporder-manager/order/" + did,
+                                data: { expressCompany: $("#kdgongsi").val(), expressNumber: $("#kddanhao").val() },
+                                dataType: "json",
+                                success: function (obj) {
+                                    if (obj.msg == "success") {
+                                        if (obj.data) {
+                                            layer.msg('快单号保存成功', {
+                                                time: 2000, //2s后自动关闭
+                                            });
+                                            $("#kdgongsi").val("");
+                                            $("#kddanhao").val("");
+                                            $('#detailState').dialog('close');
+                                            window.location.reload();
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                }]
+            })
+        });
+
+    </script>
+</body>
+</html>
